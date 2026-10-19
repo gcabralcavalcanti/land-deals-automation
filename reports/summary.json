@@ -1,0 +1,89 @@
+{
+ "parcels": 10,
+ "vgv": 59478248,
+ "vgv_by_strategy": {
+  "subdivision": 52157100,
+  "whole": 7321148
+ },
+ "profit": 24031663,
+ "margin": 0.404,
+ "npv": 2308450,
+ "irr": 0.1668,
+ "max_exposure": 28551457,
+ "exposure_month": "2028-09",
+ "payback_month": "2031-02",
+ "scenarios": [
+  {
+   "scenario": "pessimistic",
+   "vgv": 50388091.465,
+   "profit": 5193256.8807,
+   "npv": -11875307.4467,
+   "irr": 0.0282,
+   "max_exposure": 40125941.3469,
+   "payback_month": 98,
+   "margin": 0.1031
+  },
+  {
+   "scenario": "base",
+   "vgv": 59478247.7646,
+   "profit": 24031662.7961,
+   "npv": 2308450.3986,
+   "irr": 0.1668,
+   "max_exposure": 28551456.693,
+   "payback_month": 61,
+   "margin": 0.404
+  },
+  {
+   "scenario": "optimistic",
+   "vgv": 65643851.317,
+   "profit": 36100599.5716,
+   "npv": 12464834.8829,
+   "irr": 0.3167,
+   "max_exposure": 20520236.1162,
+   "payback_month": 44,
+   "margin": 0.5499
+  }
+ ],
+ "memos": {
+  "T01": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  },
+  "T02": {
+   "recommendation": "invest_with_conditions",
+   "status": "checked"
+  },
+  "T03": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  },
+  "T04": {
+   "recommendation": "invest_with_conditions",
+   "status": "checked"
+  },
+  "T05": {
+   "recommendation": "invest_with_conditions",
+   "status": "checked"
+  },
+  "T06": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  },
+  "T07": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  },
+  "T08": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  },
+  "T09": {
+   "recommendation": "invest",
+   "status": "checked"
+  },
+  "T10": {
+   "recommendation": "do_not_invest",
+   "status": "checked"
+  }
+ }
+}

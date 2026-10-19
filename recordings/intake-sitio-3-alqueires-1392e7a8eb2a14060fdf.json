@@ -1,0 +1,49 @@
+{
+ "task": "intake-sitio-3-alqueires",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:09+00:00",
+ "request": {
+  "system": "You turn a free-text description of a land parcel into structured premises for an investment model.\nRules:\n- Copy values as written, with their units (\"12 hectares\", \"R$ 3,8 milhões\"). Do not convert or compute.\n- kind is the only field you classify: urban, expansion or rural.\n- quote: the exact passage of the description that supports the value; \"\" when the value is empty.\n- If the description does not give a field, value and quote are \"\" (name is the exception).\n- notes: one sentence on anything a buyer should double-check, or \"\".",
+  "prompt": "Fields (one item per field):\n- name: short name for the parcel (make one up from the description if none is given)\n- kind: one of: urban, expansion (urban-expansion zone), rural\n- town: town or region, as written\n- area: total area as written, with its unit (m2, hectares, alqueires)\n- acquisition_price: price the buyer expects to pay, as written (if an asking price and an expected closing price both appear, the expected closing price)\n- raw_price_m2: market price of comparable raw land per m2, as written\n- lot_price_m2: market price per m2 of finished lots nearby, as written; empty if not mentioned\n\n<description>\nSítio de 3 alqueires paulistas na zona rural do Município E, com nascente, cerca nova e CAR feito.\nValor de compra: R$ 650 mil. Terra nua na região é negociada a R$ 9 o metro quadrado.\n\n</description>"
+ },
+ "answer": {
+  "items": [
+   {
+    "field": "name",
+    "value": "Sítio Município E",
+    "quote": "Sítio de 3 alqueires paulistas na zona rural do Município E"
+   },
+   {
+    "field": "kind",
+    "value": "rural",
+    "quote": "na zona rural do Município E"
+   },
+   {
+    "field": "town",
+    "value": "Município E",
+    "quote": "zona rural do Município E"
+   },
+   {
+    "field": "area",
+    "value": "3 alqueires paulistas",
+    "quote": "Sítio de 3 alqueires paulistas"
+   },
+   {
+    "field": "acquisition_price",
+    "value": "R$ 650 mil",
+    "quote": "Valor de compra: R$ 650 mil."
+   },
+   {
+    "field": "raw_price_m2",
+    "value": "R$ 9 o metro quadrado",
+    "quote": "Terra nua na região é negociada a R$ 9 o metro quadrado."
+   },
+   {
+    "field": "lot_price_m2",
+    "value": "",
+    "quote": ""
+   }
+  ],
+  "notes": "Confirm whether the 3 alqueires paulistas figure and the R$ 650 mil price are the expected closing amounts, and verify the land's rural classification and the stated R$ 9/m2 comparable."
+ }
+}

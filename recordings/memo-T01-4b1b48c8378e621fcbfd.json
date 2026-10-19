@@ -1,0 +1,22 @@
+{
+ "task": "memo-T01",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:16+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T01 Sítio Pinheirinho\n- kind: rural\n- strategy: whole\n- area: 54,000 m2\n- acquisition price: R$ 693,000\n- VGV (total sales value): R$ 1,124,426\n- net profit (nominal): R$ 166,846\n- margin on VGV: 14.8%\n- NPV at the 14.0% hurdle rate: R$ -133,515\n- IRR (per year): 6.9%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 861,482\n- payback: 39 months\n- cash flow duration: 43 months\n- infrastructure and site labor: R$ 0\n- holding costs (maintenance + property tax): R$ 134,798"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T01 Sítio Pinheirinho does not clear the 14.0% hurdle rate, so the parcel should not be acquired on the current plan.",
+  "thesis": "Acquiring the whole parcel for R$ 693,000 yields a nominal net profit of R$ 166,846 on a VGV of R$ 1,124,426, a 14.8% margin. At the 14.0% hurdle rate the NPV is R$ -133,515 and the IRR is only 6.9% per year. Payback takes 39 months within a 43-month cash flow, and maximum cash exposure reaches R$ 861,482.",
+  "risks": [
+   "Holding costs of R$ 134,798 erode a thin margin over the 43-month cash flow.",
+   "Infrastructure and site labor is budgeted at R$ 0, so unexpected development costs could further reduce returns.",
+   "Payback at 39 months leaves little buffer against sales delays on a rural parcel."
+  ],
+  "conditions": [
+   "Acquisition price is renegotiated low enough to bring NPV at the 14.0% hurdle rate to zero or above."
+  ]
+ }
+}

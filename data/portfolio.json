@@ -1,0 +1,122 @@
+[
+ {
+  "id": "T01",
+  "name": "Sítio Pinheirinho",
+  "kind": "rural",
+  "town": "Município B (interior de SP)",
+  "area_m2": 54000.0,
+  "acquisition_price": 693000.0,
+  "acquisition_month": 0,
+  "raw_price_m2": 18.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ },
+ {
+  "id": "T02",
+  "name": "Área Jardim Novo",
+  "kind": "urban",
+  "town": "Município A (interior de SP)",
+  "area_m2": 33800.0,
+  "acquisition_price": 2648000.0,
+  "acquisition_month": 2,
+  "raw_price_m2": 95.0,
+  "lot_price_m2": 427.0,
+  "overrides": {}
+ },
+ {
+  "id": "T03",
+  "name": "Chácara Água Limpa",
+  "kind": "rural",
+  "town": "Município A (interior de SP)",
+  "area_m2": 75500.0,
+  "acquisition_price": 755000.0,
+  "acquisition_month": 3,
+  "raw_price_m2": 14.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ },
+ {
+  "id": "T04",
+  "name": "Gleba Boa Vista",
+  "kind": "expansion",
+  "town": "Município B (interior de SP)",
+  "area_m2": 68000.0,
+  "acquisition_price": 2956000.0,
+  "acquisition_month": 6,
+  "raw_price_m2": 55.0,
+  "lot_price_m2": 308.0,
+  "overrides": {}
+ },
+ {
+  "id": "T05",
+  "name": "Gleba Santa Rita",
+  "kind": "expansion",
+  "town": "Município A (interior de SP)",
+  "area_m2": 73600.0,
+  "acquisition_price": 3016000.0,
+  "acquisition_month": 9,
+  "raw_price_m2": 57.0,
+  "lot_price_m2": 304.0,
+  "overrides": {}
+ },
+ {
+  "id": "T06",
+  "name": "Área Avenida Central",
+  "kind": "urban",
+  "town": "Município C (sul de MG)",
+  "area_m2": 10000.0,
+  "acquisition_price": 1113000.0,
+  "acquisition_month": 9,
+  "raw_price_m2": 149.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ },
+ {
+  "id": "T07",
+  "name": "Terreno Esquina Comercial",
+  "kind": "urban",
+  "town": "Município A (interior de SP)",
+  "area_m2": 4000.0,
+  "acquisition_price": 1074000.0,
+  "acquisition_month": 10,
+  "raw_price_m2": 319.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ },
+ {
+  "id": "T08",
+  "name": "Área Vila Operária",
+  "kind": "urban",
+  "town": "Município A (interior de SP)",
+  "area_m2": 7700.0,
+  "acquisition_price": 705000.0,
+  "acquisition_month": 10,
+  "raw_price_m2": 107.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ },
+ {
+  "id": "T09",
+  "name": "Gleba Ribeirão Claro",
+  "kind": "expansion",
+  "town": "Município C (sul de MG)",
+  "area_m2": 76200.0,
+  "acquisition_price": 3563000.0,
+  "acquisition_month": 12,
+  "raw_price_m2": 66.0,
+  "lot_price_m2": 386.0,
+  "overrides": {}
+ },
+ {
+  "id": "T10",
+  "name": "Terreno Rua das Acácias",
+  "kind": "urban",
+  "town": "Município B (interior de SP)",
+  "area_m2": 2600.0,
+  "acquisition_price": 590000.0,
+  "acquisition_month": 13,
+  "raw_price_m2": 273.0,
+  "lot_price_m2": null,
+  "overrides": {}
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "task": "memo-T02",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:20+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T02 Área Jardim Novo\n- kind: urban\n- strategy: subdivision\n- area: 33,800 m2\n- acquisition price: R$ 2,648,000\n- VGV (total sales value): R$ 8,582,700\n- net profit (nominal): R$ 3,654,876\n- margin on VGV: 42.6%\n- NPV at the 14.0% hurdle rate: R$ 364,934\n- IRR (per year): 16.6%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 4,316,843\n- payback: 56 months\n- cash flow duration: 108 months\n- infrastructure and site labor: R$ 2,387,880\n- holding costs (maintenance + property tax): R$ 144,865\n- lots: 67 lots\n- price per lot: R$ 128,100\n- months from purchase to launch: 12 months"
+ },
+ "answer": {
+  "recommendation": "invest_with_conditions",
+  "headline": "Parcel T02 Área Jardim Novo clears the 14.0% hurdle rate with an NPV of R$ 364,934, but the 56-month payback and R$ 4,316,843 peak cash exposure call for disciplined execution.",
+  "thesis": "The urban subdivision of 33,800 m2 into 67 lots at R$ 128,100 per lot produces a VGV of R$ 8,582,700 against an acquisition price of R$ 2,648,000. The project yields a net profit of R$ 3,654,876, a margin on VGV of 42.6%, and an IRR of 16.6% per year, above the 14.0% hurdle rate. Returns are real but depend on a long cash cycle of 108 months and substantial infrastructure spending of R$ 2,387,880.",
+  "risks": [
+   "Payback of 56 months and a cash flow duration of 108 months expose capital to long-term market and financing risk.",
+   "Maximum cash exposure of R$ 4,316,843 is large relative to the acquisition price, leaving little margin for cost overruns.",
+   "Holding costs of R$ 144,865 and a 12-month lead from purchase to launch add carry risk if sales slow."
+  ],
+  "conditions": [
+   "Infrastructure and site labor budget is locked at or near R$ 2,387,880 before closing.",
+   "Presales or lot reservations are secured before the 12-month launch to validate the R$ 128,100 price per lot."
+  ]
+ }
+}

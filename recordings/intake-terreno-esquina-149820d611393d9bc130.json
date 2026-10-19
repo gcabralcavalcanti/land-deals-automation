@@ -1,0 +1,49 @@
+{
+ "task": "intake-terreno-esquina",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:11+00:00",
+ "request": {
+  "system": "You turn a free-text description of a land parcel into structured premises for an investment model.\nRules:\n- Copy values as written, with their units (\"12 hectares\", \"R$ 3,8 milhões\"). Do not convert or compute.\n- kind is the only field you classify: urban, expansion or rural.\n- quote: the exact passage of the description that supports the value; \"\" when the value is empty.\n- If the description does not give a field, value and quote are \"\" (name is the exception).\n- notes: one sentence on anything a buyer should double-check, or \"\".",
+  "prompt": "Fields (one item per field):\n- name: short name for the parcel (make one up from the description if none is given)\n- kind: one of: urban, expansion (urban-expansion zone), rural\n- town: town or region, as written\n- area: total area as written, with its unit (m2, hectares, alqueires)\n- acquisition_price: price the buyer expects to pay, as written (if an asking price and an expected closing price both appear, the expected closing price)\n- raw_price_m2: market price of comparable raw land per m2, as written\n- lot_price_m2: market price per m2 of finished lots nearby, as written; empty if not mentioned\n\n<description>\nTerreno urbano de 1.800 m² na avenida principal do Município F, esquina, zoneamento comercial.\nCompra por R$ 540.000. Os terrenos vizinhos estão anunciados a R$ 380/m².\n\n</description>"
+ },
+ "answer": {
+  "items": [
+   {
+    "field": "name",
+    "value": "Terreno comercial de esquina – Município F",
+    "quote": ""
+   },
+   {
+    "field": "kind",
+    "value": "urban",
+    "quote": "Terreno urbano de 1.800 m² na avenida principal do Município F, esquina, zoneamento comercial."
+   },
+   {
+    "field": "town",
+    "value": "Município F",
+    "quote": "na avenida principal do Município F"
+   },
+   {
+    "field": "area",
+    "value": "1.800 m²",
+    "quote": "Terreno urbano de 1.800 m²"
+   },
+   {
+    "field": "acquisition_price",
+    "value": "R$ 540.000",
+    "quote": "Compra por R$ 540.000."
+   },
+   {
+    "field": "raw_price_m2",
+    "value": "R$ 380/m²",
+    "quote": "Os terrenos vizinhos estão anunciados a R$ 380/m²."
+   },
+   {
+    "field": "lot_price_m2",
+    "value": "",
+    "quote": ""
+   }
+  ],
+  "notes": "The R$ 380/m² neighbouring price is an advertised asking price, not a closing price, so confirm it against actual transactions; also verify the corner lot's commercial zoning and whether R$ 540.000 is the expected closing price."
+ }
+}

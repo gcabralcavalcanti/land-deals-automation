@@ -1,0 +1,49 @@
+{
+ "task": "intake-gleba-12ha",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:07+00:00",
+ "request": {
+  "system": "You turn a free-text description of a land parcel into structured premises for an investment model.\nRules:\n- Copy values as written, with their units (\"12 hectares\", \"R$ 3,8 milhões\"). Do not convert or compute.\n- kind is the only field you classify: urban, expansion or rural.\n- quote: the exact passage of the description that supports the value; \"\" when the value is empty.\n- If the description does not give a field, value and quote are \"\" (name is the exception).\n- notes: one sentence on anything a buyer should double-check, or \"\".",
+  "prompt": "Fields (one item per field):\n- name: short name for the parcel (make one up from the description if none is given)\n- kind: one of: urban, expansion (urban-expansion zone), rural\n- town: town or region, as written\n- area: total area as written, with its unit (m2, hectares, alqueires)\n- acquisition_price: price the buyer expects to pay, as written (if an asking price and an expected closing price both appear, the expected closing price)\n- raw_price_m2: market price of comparable raw land per m2, as written\n- lot_price_m2: market price per m2 of finished lots nearby, as written; empty if not mentioned\n\n<description>\nGleba de 12 hectares em área de expansão urbana do Município D, a 2 km do centro, com acesso por estrada asfaltada.\nO dono pede R$ 4,2 milhões, mas pelo que conversamos deve fechar em R$ 3,8 milhões.\nLotes prontos nos loteamentos vizinhos estão saindo por uns R$ 350 o m²; terra bruta parecida vende a R$ 40/m².\n\n</description>"
+ },
+ "answer": {
+  "items": [
+   {
+    "field": "name",
+    "value": "Gleba Município D – Área de Expansão",
+    "quote": ""
+   },
+   {
+    "field": "kind",
+    "value": "expansion",
+    "quote": "Gleba de 12 hectares em área de expansão urbana do Município D"
+   },
+   {
+    "field": "town",
+    "value": "Município D",
+    "quote": "área de expansão urbana do Município D"
+   },
+   {
+    "field": "area",
+    "value": "12 hectares",
+    "quote": "Gleba de 12 hectares"
+   },
+   {
+    "field": "acquisition_price",
+    "value": "R$ 3,8 milhões",
+    "quote": "pelo que conversamos deve fechar em R$ 3,8 milhões"
+   },
+   {
+    "field": "raw_price_m2",
+    "value": "R$ 40/m²",
+    "quote": "terra bruta parecida vende a R$ 40/m²"
+   },
+   {
+    "field": "lot_price_m2",
+    "value": "R$ 350 o m²",
+    "quote": "Lotes prontos nos loteamentos vizinhos estão saindo por uns R$ 350 o m²"
+   }
+  ],
+  "notes": "Confirm the 12-hectare area against the registry (matrícula), since the description gives no source for it, and verify whether the R$ 3,8 milhões closing price is agreed in writing."
+ }
+}

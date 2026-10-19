@@ -1,0 +1,22 @@
+{
+ "task": "memo-T08",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:23:38+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T08 Área Vila Operária\n- kind: urban\n- strategy: whole\n- area: 7,700 m2\n- acquisition price: R$ 705,000\n- VGV (total sales value): R$ 953,102\n- net profit (nominal): R$ 98,816\n- margin on VGV: 10.4%\n- NPV at the 14.0% hurdle rate: R$ -166,926\n- IRR (per year): 4.4%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 772,830\n- payback: 40 months\n- cash flow duration: 43 months\n- infrastructure and site labor: R$ 0\n- holding costs (maintenance + property tax): R$ 36,105"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T08 Área Vila Operária shows a negative NPV of R$ -166,926 at the 14.0% hurdle rate, so the parcel should not be acquired on the current terms.",
+  "thesis": "At an IRR of 4.4% per year against a 14.0% hurdle rate, the parcel fails to earn the required return despite a nominal net profit of R$ 98,816. The margin on VGV of 10.4% is thin relative to a maximum cash exposure of R$ 772,830 and a payback of 40 months within a 43-month cash flow duration. The business case does not justify the capital tied up.",
+  "risks": [
+   "Returns are well below the hurdle rate, and the 40-month payback leaves little margin for delays.",
+   "Holding costs of R$ 36,105 and infrastructure and site labor at R$ 0 may be understated if site work proves necessary."
+  ],
+  "conditions": [
+   "Acquisition price is reduced enough to bring NPV at the 14.0% hurdle rate to a positive value.",
+   "Sales value or timing improves enough to lift the IRR above the 14.0% hurdle rate."
+  ]
+ }
+}
