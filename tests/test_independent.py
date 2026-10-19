@@ -1,6 +1,7 @@
 """Independent check of the model: the same parcels rebuilt with numpy straight from the written spec (README, "The
 model"), and the metrics recomputed another way (NPV by vector discounting, IRR from the roots of the NPV polynomial,
 payback and exposure from numpy's cumulative sum). Nothing here imports the model's internals except the results."""
+
 import math
 
 import numpy as np
@@ -16,22 +17,24 @@ def spec_flows(p: dict, a: dict, strategy: str) -> dict[str, np.ndarray]:
     t0, area, price = p["acquisition_month"], p["area_m2"], p["acquisition_price"]
     rural = p["kind"] == "rural"
     f["acquisition"][t0] -= price
-    f["acquisition_taxes"][t0] -= price * (a["itbi_rate"] + a["deed_registry_rate"]) + (a["car_service"] if rural else 0)
-    share = np.zeros(H)                                   # share of the area still owned
+    f["acquisition_taxes"][t0] -= price * (a["itbi_rate"] + a["deed_registry_rate"]) + (
+        a["car_service"] if rural else 0
+    )
+    share = np.zeros(H)  # share of the area still owned
     if strategy == "subdivision":
         A, I, N = int(a["approval_months"]), int(a["infra_months"]), int(a["absorption_months"])
         lots = math.floor(area * a["saleable_ratio"] / a["lot_size_m2"])
         vgv = lots * p["lot_price_m2"] * a["lot_price_factor"] * a["lot_size_m2"]
         L = t0 + A
         f["studies_approval"][t0:L] -= (a["topography_per_m2"] + a["approval_per_m2"]) * area / A
-        f["infrastructure"][L:L + I] -= a["infra_per_m2"] * lots * a["lot_size_m2"] * (1 + a["labor_rate"]) / I
+        f["infrastructure"][L : L + I] -= a["infra_per_m2"] * lots * a["lot_size_m2"] * (1 + a["labor_rate"]) / I
         f["small_constructions"][t0 + 1] -= 4 * math.sqrt(area) * a["fence_per_m"]
         f["small_constructions"][L] -= a["gatehouse"]
         sales = np.zeros(H)
-        sales[L:L + N] = vgv / N
-        f["marketing"][L:L + N] -= vgv * a["marketing_rate"] / N
+        sales[L : L + N] = vgv / N
+        f["marketing"][L : L + N] -= vgv * a["marketing_rate"] / N
         share[t0:L] = 1
-        share[L:L + N] = 1 - np.arange(1, N + 1) / N
+        share[L : L + N] = 1 - np.arange(1, N + 1) / N
         down_rate, n, idx = a["down_rate"], int(a["installments"]), a["index_rate_year"]
         cash = sales * a["cash_share"]
         financed = sales * (1 - a["cash_share"])
@@ -40,7 +43,7 @@ def spec_flows(p: dict, a: dict, strategy: str) -> dict[str, np.ndarray]:
         vgv = area * p["raw_price_m2"] * a["lot_price_factor"] * (1 + a["land_appreciation_year"]) ** (hold / 12)
         sales = np.zeros(H)
         sales[t0 + hold] = vgv
-        share[t0:t0 + hold] = 1
+        share[t0 : t0 + hold] = 1
         down_rate, n, idx = a["whole_down_rate"], int(a["whole_installments"]), 0.0
         cash = np.zeros(H)
         financed = sales
@@ -48,7 +51,7 @@ def spec_flows(p: dict, a: dict, strategy: str) -> dict[str, np.ndarray]:
     f["broker"] -= sales * a["broker_rate"]
     f["cash_sales"] += cash
     f["down_payments"] += financed * down_rate
-    pmt = (1 - down_rate) * i / (1 - (1 + i) ** -n)      # per R$ financed
+    pmt = (1 - down_rate) * i / (1 - (1 + i) ** -n)  # per R$ financed
     k = np.arange(1, n + 1)
     schedule = np.zeros(n + 1)
     schedule[1:] = pmt * (1 + idx) ** ((k - 1) // 12) * (1 - a["default_rate"])
@@ -83,8 +86,12 @@ def parcels(tmp_path_factory):
 @pytest.mark.parametrize("pick", ["subdivision", "whole", "rural"])
 def test_flows_match_the_spec(parcels, pick):
     a = config.base()
-    p = next(x for x in parcels if (x["kind"] == "rural") == (pick == "rural")
-             and model.strategy_for(x, a) == ("subdivision" if pick == "subdivision" else "whole"))
+    p = next(
+        x
+        for x in parcels
+        if (x["kind"] == "rural") == (pick == "rural")
+        and model.strategy_for(x, a) == ("subdivision" if pick == "subdivision" else "whole")
+    )
     r = model.project(p)
     f = spec_flows(p, a, r["strategy"])
     assert r["vgv"] == pytest.approx(f["_vgv"])
@@ -92,7 +99,7 @@ def test_flows_match_the_spec(parcels, pick):
         assert r["totals"][c] == pytest.approx(f[c].sum(), rel=1e-9, abs=1e-6), c
     net = sum(f[c] for c in model.CATEGORIES)
     last = int(np.nonzero(np.abs(net) > 1e-9)[0].max())
-    net = net[p["acquisition_month"]:last + 1]
+    net = net[p["acquisition_month"] : last + 1]
     assert np.allclose(r["net"], net, atol=1e-6)
     # metrics, computed another way
     cum = np.cumsum(net)
@@ -107,21 +114,41 @@ def test_flows_match_the_spec(parcels, pick):
 def test_installments_repay_the_balance():
     """Before correction and default, installments discounted at the contract rate equal the financed balance."""
     a = {**config.base(), "index_rate_year": 0.0, "default_rate": 0.0}
-    p = {"id": "X", "name": "x", "kind": "urban", "area_m2": 30000, "acquisition_price": 1e6, "acquisition_month": 0,
-         "raw_price_m2": 50, "lot_price_m2": 400, "overrides": {}}
+    p = {
+        "id": "X",
+        "name": "x",
+        "kind": "urban",
+        "area_m2": 30000,
+        "acquisition_price": 1e6,
+        "acquisition_month": 0,
+        "raw_price_m2": 50,
+        "lot_price_m2": 400,
+        "overrides": {},
+    }
     r = model.project(p, a, strategy="subdivision")
     i, L = a["monthly_interest"], r["launch"]
     pv = sum(v / (1 + i) ** (m - L) for m, v in r["by_category"]["installments"].items())
     # sales are spread over months; discount each month's sales back to L the same way
-    financed = sum(r["vgv"] / a["absorption_months"] * (1 - a["cash_share"]) * (1 - a["down_rate"])
-                   / (1 + i) ** j for j in range(int(a["absorption_months"])))
+    financed = sum(
+        r["vgv"] / a["absorption_months"] * (1 - a["cash_share"]) * (1 - a["down_rate"]) / (1 + i) ** j
+        for j in range(int(a["absorption_months"]))
+    )
     assert pv == pytest.approx(financed, rel=1e-9)
 
 
 def test_correction_steps_once_a_year():
     a = {**config.base(), "default_rate": 0.0}
-    p = {"id": "X", "name": "x", "kind": "urban", "area_m2": 30000, "acquisition_price": 1e6, "acquisition_month": 0,
-         "raw_price_m2": 50, "lot_price_m2": 400, "overrides": {}}
+    p = {
+        "id": "X",
+        "name": "x",
+        "kind": "urban",
+        "area_m2": 30000,
+        "acquisition_price": 1e6,
+        "acquisition_month": 0,
+        "raw_price_m2": 50,
+        "lot_price_m2": 400,
+        "overrides": {},
+    }
     r = model.project(p, {**a, "absorption_months": 1}, strategy="subdivision")
     inst = [r["by_category"]["installments"][m] for m in sorted(r["by_category"]["installments"])]
     assert len(inst) == a["installments"]

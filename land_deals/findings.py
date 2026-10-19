@@ -1,5 +1,6 @@
 """Plain-English conclusions computed from the results, shared by the workbook, the PDF and the dashboard, so the
 three always say the same thing."""
+
 from __future__ import annotations
 
 from . import config
@@ -48,25 +49,37 @@ def conclusions(pf: dict, scen: list[dict], sens: list[dict], strat: list[dict])
     whole = [p for p in pf["projects"] if p["strategy"] == "whole"]
     out = []
     if subs:
-        out.append(f"The {len(subs)} subdivisions carry the portfolio: NPV of {mi(sum(p['npv'] for p in subs))} "
-                   f"against {mi(pf['npv'])} in total.")
+        out.append(
+            f"The {len(subs)} subdivisions carry the portfolio: NPV of {mi(sum(p['npv'] for p in subs))} "
+            f"against {mi(pf['npv'])} in total."
+        )
     if whole:
         irrs = [p["irr"] for p in whole if p["irr"] is not None]
         below = sum(1 for x in irrs if x < hurdle)
-        out.append(f"The {len(whole)} parcels sold whole return {pct(min(irrs))} to {pct(max(irrs))} a year; "
-                   f"{below} of them are below the {hurdle:.0%} hurdle, because holding land costs maintenance "
-                   f"and tax while it appreciates more slowly than the hurdle rate.")
+        out.append(
+            f"The {len(whole)} parcels sold whole return {pct(min(irrs))} to {pct(max(irrs))} a year; "
+            f"{below} of them are below the {hurdle:.0%} hurdle, because holding land costs maintenance "
+            f"and tax while it appreciates more slowly than the hurdle rate."
+        )
     top = sens[0]
-    out.append(f"{label(top['assumption'])} moves NPV the most: from {mi(top['npv_low'])} at "
-               f"{value(top['assumption'], top['low'])} to {mi(top['npv_high'])} at {value(top['assumption'], top['high'])}.")
-    out.append(f"Cash need peaks at {mi(pf['max_exposure'])} in {when(pf['exposure_month'])}; the portfolio pays "
-               f"back in {when(pf['payback_month'])}, {pf['payback_month']} months after the first purchase.")
+    out.append(
+        f"{label(top['assumption'])} moves NPV the most: from {mi(top['npv_low'])} at "
+        f"{value(top['assumption'], top['low'])} to {mi(top['npv_high'])} at {value(top['assumption'], top['high'])}."
+    )
+    out.append(
+        f"Cash need peaks at {mi(pf['max_exposure'])} in {when(pf['exposure_month'])}; the portfolio pays "
+        f"back in {when(pf['payback_month'])}, {pf['payback_month']} months after the first purchase."
+    )
     by = {s["scenario"]: s for s in scen}
     if "pessimistic" in by:
         p = by["pessimistic"]
-        out.append(f"In the pessimistic scenario NPV is {mi(p['npv'])} and IRR {pct(p['irr'])}; "
-                   f"the optimistic one reaches {mi(by['optimistic']['npv'])}.")
+        out.append(
+            f"In the pessimistic scenario NPV is {mi(p['npv'])} and IRR {pct(p['irr'])}; "
+            f"the optimistic one reaches {mi(by['optimistic']['npv'])}."
+        )
     if strat:
         wins = sum(1 for s in strat if s["npv_subdivision"] > s["npv_whole"])
-        out.append(f"Subdividing beats selling whole in {wins} of the {len(strat)} urban parcels where both are possible.")
+        out.append(
+            f"Subdividing beats selling whole in {wins} of the {len(strat)} urban parcels where both are possible."
+        )
     return out

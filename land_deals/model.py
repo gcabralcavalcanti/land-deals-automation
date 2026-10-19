@@ -2,8 +2,9 @@
 
 Two strategies: subdivide (loteamento: approval, infrastructure, sell lots over an absorption period) or resell the
 parcel whole after a holding period. Sales are part cash, part financed (down payment + Price-table installments
-corrected yearly by a fixed index). Every number is plain Python and reproducible.
+corrected yearly by a fixed index).
 """
+
 from __future__ import annotations
 
 import math
@@ -13,8 +14,18 @@ from . import config
 from .text import pmt
 
 INFLOWS = ("cash_sales", "down_payments", "installments")
-OUTFLOWS = ("acquisition", "acquisition_taxes", "studies_approval", "infrastructure", "small_constructions",
-            "marketing", "maintenance", "property_tax", "broker", "sales_tax")
+OUTFLOWS = (
+    "acquisition",
+    "acquisition_taxes",
+    "studies_approval",
+    "infrastructure",
+    "small_constructions",
+    "marketing",
+    "maintenance",
+    "property_tax",
+    "broker",
+    "sales_tax",
+)
 CATEGORIES = OUTFLOWS + INFLOWS
 
 
@@ -48,7 +59,7 @@ def project(parcel: dict, assumptions: dict | None = None, strategy: str | None 
         flows["acquisition_taxes"][t0] -= a["car_service"]
     tax_rate = a["itr_rate"] if parcel["kind"] == "rural" else a["iptu_rate"]
     maintenance = a["rural_maintenance_per_m2_month"] if parcel["kind"] == "rural" else a["maintenance_per_m2_month"]
-    unsold: dict[int, float] = {}           # share of the area still owned, by month
+    unsold: dict[int, float] = {}  # share of the area still owned, by month
     info: dict = {"strategy": strategy}
 
     if strategy == "subdivision":
@@ -72,8 +83,15 @@ def project(parcel: dict, assumptions: dict | None = None, strategy: str | None 
             flows["marketing"][month] -= vgv * a["marketing_rate"] / absorb
             flows["broker"][month] -= sales * a["broker_rate"]
             flows["cash_sales"][month] += sales * a["cash_share"]
-            _receive(flows, month, sales * (1 - a["cash_share"]), a, int(a["installments"]),
-                     a["monthly_interest"], a["index_rate_year"])
+            _receive(
+                flows,
+                month,
+                sales * (1 - a["cash_share"]),
+                a,
+                int(a["installments"]),
+                a["monthly_interest"],
+                a["index_rate_year"],
+            )
             sold += 1 / absorb
             unsold[month] = max(0.0, 1 - sold)
         for m in range(t0, launch):
@@ -103,9 +121,18 @@ def project(parcel: dict, assumptions: dict | None = None, strategy: str | None 
     last = max(m for c in CATEGORIES for m, v in flows[c].items() if abs(v) > 1e-9)
     months = list(range(t0, last + 1))
     net = [sum(flows[c].get(m, 0.0) for c in CATEGORIES) for m in months]
-    res = {"id": parcel["id"], "name": parcel["name"], "kind": parcel["kind"], "area_m2": area, "vgv": vgv,
-           "start": t0, "months": months, "net": net,
-           "by_category": {c: {m: v for m, v in flows[c].items() if abs(v) > 1e-9} for c in CATEGORIES}, **info}
+    res = {
+        "id": parcel["id"],
+        "name": parcel["name"],
+        "kind": parcel["kind"],
+        "area_m2": area,
+        "vgv": vgv,
+        "start": t0,
+        "months": months,
+        "net": net,
+        "by_category": {c: {m: v for m, v in flows[c].items() if abs(v) > 1e-9} for c in CATEGORIES},
+        **info,
+    }
     res.update(metrics(months, net, a["discount_rate_year"], t0))
     res["totals"] = {c: sum(flows[c].values()) for c in CATEGORIES}
     res["margin"] = res["profit"] / vgv if vgv else None
@@ -126,7 +153,7 @@ def irr(net: list[float]) -> float | None:
     """Annual IRR from monthly flows, by bisection. None when the flows never change sign."""
     if not (any(v < 0 for v in net) and any(v > 0 for v in net)):
         return None
-    f = lambda r: sum(v / (1 + r) ** k for k, v in enumerate(net))  # noqa: E731
+    f = lambda r: sum(v / (1 + r) ** k for k, v in enumerate(net))
     lo, hi = -0.99, 1.0
     if f(lo) * f(hi) > 0:
         return None
@@ -151,11 +178,19 @@ def metrics(months: list[int], net: list[float], discount_year: float, t0: int) 
     exposure = -low if low < 0 else 0.0
     duration = len(months)
     roi = profit / exposure if exposure else None
-    return {"profit": profit, "npv": npv(net, discount_year), "irr": irr(net), "max_exposure": exposure,
-            "exposure_month": months[trough], "payback_month": payback,
-            "payback_months": payback - t0 if payback is not None else None, "duration_months": duration,
-            "roi": roi, "roi_year": (1 + roi) ** (12 / duration) - 1 if roi is not None and roi > -1 else None,
-            "cumulative": cum}
+    return {
+        "profit": profit,
+        "npv": npv(net, discount_year),
+        "irr": irr(net),
+        "max_exposure": exposure,
+        "exposure_month": months[trough],
+        "payback_month": payback,
+        "payback_months": payback - t0 if payback is not None else None,
+        "duration_months": duration,
+        "roi": roi,
+        "roi_year": (1 + roi) ** (12 / duration) - 1 if roi is not None and roi > -1 else None,
+        "cumulative": cum,
+    }
 
 
 def portfolio(parcels: list[dict], assumptions: dict | None = None) -> dict:
@@ -169,12 +204,16 @@ def portfolio(parcels: list[dict], assumptions: dict | None = None) -> dict:
         for c in CATEGORIES:
             for m, v in pr["by_category"][c].items():
                 by_cat[c][m] += v
-    months = list(range(0, max(by_month) + 1))
+    months = list(range(max(by_month) + 1))
     net = [by_month.get(m, 0.0) for m in months]
-    res = {"projects": projects, "months": months, "net": net,
-           "by_category": {c: [by_cat[c].get(m, 0.0) for m in months] for c in CATEGORIES},
-           "vgv": sum(p["vgv"] for p in projects),
-           "vgv_by_strategy": {s: sum(p["vgv"] for p in projects if p["strategy"] == s) for s in ("subdivision", "whole")}}
+    res = {
+        "projects": projects,
+        "months": months,
+        "net": net,
+        "by_category": {c: [by_cat[c].get(m, 0.0) for m in months] for c in CATEGORIES},
+        "vgv": sum(p["vgv"] for p in projects),
+        "vgv_by_strategy": {s: sum(p["vgv"] for p in projects if p["strategy"] == s) for s in ("subdivision", "whole")},
+    }
     res.update(metrics(months, net, a["discount_rate_year"], 0))
     res["margin"] = res["profit"] / res["vgv"] if res["vgv"] else None
     return res
@@ -182,14 +221,33 @@ def portfolio(parcels: list[dict], assumptions: dict | None = None) -> dict:
 
 # ------------------------------------------------------------------------------------- what-ifs
 SCENARIOS = {
-    "pessimistic": {"lot_price_factor": "low", "absorption_months": "high", "infra_per_m2": "high",
-                    "hold_months": "high", "land_appreciation_year": "low", "default_rate": "high"},
+    "pessimistic": {
+        "lot_price_factor": "low",
+        "absorption_months": "high",
+        "infra_per_m2": "high",
+        "hold_months": "high",
+        "land_appreciation_year": "low",
+        "default_rate": "high",
+    },
     "base": {},
-    "optimistic": {"lot_price_factor": "high", "absorption_months": "low", "infra_per_m2": "low",
-                   "hold_months": "low", "land_appreciation_year": "high", "default_rate": "low"},
+    "optimistic": {
+        "lot_price_factor": "high",
+        "absorption_months": "low",
+        "infra_per_m2": "low",
+        "hold_months": "low",
+        "land_appreciation_year": "high",
+        "default_rate": "low",
+    },
 }
-SENSITIVITY = ["lot_price_factor", "absorption_months", "infra_per_m2", "discount_rate_year", "hold_months",
-               "cash_share", "default_rate"]
+SENSITIVITY = [
+    "lot_price_factor",
+    "absorption_months",
+    "infra_per_m2",
+    "discount_rate_year",
+    "hold_months",
+    "cash_share",
+    "default_rate",
+]
 
 
 def _value(name: str, which: str) -> float:
@@ -202,9 +260,19 @@ def scenarios(parcels: list[dict]) -> list[dict]:
     for name, levers in SCENARIOS.items():
         overrides = {k: _value(k, w) for k, w in levers.items()}
         pf = portfolio(parcels, overrides)
-        out.append({"scenario": name, "overrides": overrides, "vgv": pf["vgv"], "profit": pf["profit"],
-                    "npv": pf["npv"], "irr": pf["irr"], "max_exposure": pf["max_exposure"],
-                    "payback_month": pf["payback_month"], "margin": pf["margin"]})
+        out.append(
+            {
+                "scenario": name,
+                "overrides": overrides,
+                "vgv": pf["vgv"],
+                "profit": pf["profit"],
+                "npv": pf["npv"],
+                "irr": pf["irr"],
+                "max_exposure": pf["max_exposure"],
+                "payback_month": pf["payback_month"],
+                "margin": pf["margin"],
+            }
+        )
     return out
 
 
@@ -214,8 +282,17 @@ def sensitivity(parcels: list[dict]) -> list[dict]:
     for name in SENSITIVITY:
         lo, hi = _value(name, "low"), _value(name, "high")
         npv_lo, npv_hi = portfolio(parcels, {name: lo})["npv"], portfolio(parcels, {name: hi})["npv"]
-        rows.append({"assumption": name, "low": lo, "high": hi, "npv_low": npv_lo, "npv_high": npv_hi,
-                     "base_npv": base_npv, "swing": abs(npv_hi - npv_lo)})
+        rows.append(
+            {
+                "assumption": name,
+                "low": lo,
+                "high": hi,
+                "npv_low": npv_lo,
+                "npv_high": npv_hi,
+                "base_npv": base_npv,
+                "swing": abs(npv_hi - npv_lo),
+            }
+        )
     return sorted(rows, key=lambda r: -r["swing"])
 
 
@@ -226,7 +303,18 @@ def strategy_comparison(parcels: list[dict]) -> list[dict]:
         if p["kind"] == "rural" or not p.get("lot_price_m2"):
             continue
         sub, whole = project(p, strategy="subdivision"), project(p, strategy="whole")
-        rows.append({"id": p["id"], "name": p["name"], "area_m2": p["area_m2"], "rule": strategy_for(p, config.base()),
-                     "vgv_subdivision": sub["vgv"], "npv_subdivision": sub["npv"], "irr_subdivision": sub["irr"],
-                     "vgv_whole": whole["vgv"], "npv_whole": whole["npv"], "irr_whole": whole["irr"]})
+        rows.append(
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "area_m2": p["area_m2"],
+                "rule": strategy_for(p, config.base()),
+                "vgv_subdivision": sub["vgv"],
+                "npv_subdivision": sub["npv"],
+                "irr_subdivision": sub["irr"],
+                "vgv_whole": whole["vgv"],
+                "npv_whole": whole["npv"],
+                "irr_whole": whole["irr"],
+            }
+        )
     return rows

@@ -1,7 +1,8 @@
 """Writes the synthetic land portfolio to data/portfolio.json.
 
-    python generate_data.py [--seed 11]
+python generate_data.py [--seed 11]
 """
+
 import argparse
 import json
 

@@ -1,5 +1,6 @@
 """Static outputs: PNG charts, the PDF report (matplotlib) and the HTML dashboard (Chart.js, no build step).
 The PDF and the dashboard draw the same charts from the same numbers, including the conclusions in findings.py."""
+
 from __future__ import annotations
 
 import json
@@ -9,13 +10,13 @@ from pathlib import Path
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.backends.backend_pdf import PdfPages  # noqa: E402
-from matplotlib.ticker import FuncFormatter  # noqa: E402
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.ticker import FuncFormatter
 
-from . import config  # noqa: E402
-from .findings import conclusions, label, value, when  # noqa: E402
-from .workbook import month_label  # noqa: E402
+from . import config
+from .findings import conclusions, label, value, when
+from .workbook import month_label
 
 BLUE, ORANGE, GREY, GREEN, RED, INK = "#1f4e5f", "#e07b39", "#9aa5ab", "#3c8d5a", "#b8433a", "#1d2b33"
 MI = FuncFormatter(lambda v, _: f"{v:,.1f}")
@@ -65,8 +66,15 @@ def fig_cash(pf, figsize=(11, 4.6)):
     ax.plot(x, cum, color=BLUE, lw=2.4, label="cumulative cash")
     low = cum.index(min(cum))
     ax.scatter([low], [cum[low]], color=BLUE, zorder=3, s=40)
-    ax.annotate(_tex(f"maximum exposure {_money(pf['max_exposure'])} ({when(pf['exposure_month'])})"),
-                (low, cum[low]), xytext=(10, -4), textcoords="offset points", fontsize=9, color=BLUE, va="top")
+    ax.annotate(
+        _tex(f"maximum exposure {_money(pf['max_exposure'])} ({when(pf['exposure_month'])})"),
+        (low, cum[low]),
+        xytext=(10, -4),
+        textcoords="offset points",
+        fontsize=9,
+        color=BLUE,
+        va="top",
+    )
     ax.axhline(0, color=GREY, lw=0.8)
     ax.set_xticks(list(x)[::4], labels[::4], fontsize=8)
     ax.yaxis.set_major_formatter(MI)
@@ -85,8 +93,15 @@ def fig_parcels(pf, figsize=(11, 4.6)):
     npv = [p["npv"] / 1e6 for p in ps]
     a1.barh(names, npv, color=[BLUE if p["strategy"] == "subdivision" else ORANGE for p in ps])
     for y, v in enumerate(npv):
-        a1.annotate(f"{v:,.1f}", (v, y), xytext=(3 if v >= 0 else -3, 0), textcoords="offset points",
-                    ha="left" if v >= 0 else "right", va="center", fontsize=8)
+        a1.annotate(
+            f"{v:,.1f}",
+            (v, y),
+            xytext=(3 if v >= 0 else -3, 0),
+            textcoords="offset points",
+            ha="left" if v >= 0 else "right",
+            va="center",
+            fontsize=8,
+        )
     a1.axvline(0, color=GREY, lw=0.8)
     a1.xaxis.set_major_formatter(MI)
     a1.set_xlabel(_tex("NPV, R$ million"))
@@ -111,9 +126,15 @@ def fig_scenarios_tornado(scen, sens, figsize=(11, 4.6)):
     vals = [s["npv"] / 1e6 for s in scen]
     a1.bar(names, vals, color=[RED, BLUE, GREEN])
     for i, s in enumerate(scen):
-        a1.annotate(f"{vals[i]:,.1f}\nIRR {_pct(s['irr'])}", (i, vals[i]), ha="center",
-                    va="bottom" if vals[i] >= 0 else "top", xytext=(0, 3 if vals[i] >= 0 else -3),
-                    textcoords="offset points", fontsize=8)
+        a1.annotate(
+            f"{vals[i]:,.1f}\nIRR {_pct(s['irr'])}",
+            (i, vals[i]),
+            ha="center",
+            va="bottom" if vals[i] >= 0 else "top",
+            xytext=(0, 3 if vals[i] >= 0 else -3),
+            textcoords="offset points",
+            fontsize=8,
+        )
     a1.axhline(0, color=GREY, lw=0.8)
     a1.set_ylim(min(vals + [0]) * 1.3, max(vals) * 1.3)
     a1.yaxis.set_major_formatter(MI)
@@ -137,8 +158,11 @@ def fig_scenarios_tornado(scen, sens, figsize=(11, 4.6)):
 def save_pngs(pf, scen, sens, out: Path) -> list[Path]:
     out.mkdir(parents=True, exist_ok=True)
     paths = []
-    for name, fig in (("cash_flow", fig_cash(pf)), ("parcels", fig_parcels(pf)),
-                      ("scenarios_sensitivity", fig_scenarios_tornado(scen, sens))):
+    for name, fig in (
+        ("cash_flow", fig_cash(pf)),
+        ("parcels", fig_parcels(pf)),
+        ("scenarios_sensitivity", fig_scenarios_tornado(scen, sens)),
+    ):
         p = out / f"{name}.png"
         fig.savefig(p, dpi=110)
         plt.close(fig)
@@ -193,20 +217,44 @@ def pdf_report(path: Path, pf, scen, sens, strat, memos) -> Path:
     with PdfPages(path) as pdf:
         # 1. executive summary
         fig = _page(pdf, "Land portfolio: cost x return - executive summary", sub)
-        kpis = [["Parcels", f"{len(pf['projects'])}"],
-                ["VGV (total sales value)", _money(pf["vgv"])],
-                ["  subdivided / sold whole", f"{_money(pf['vgv_by_strategy']['subdivision'])} / {_money(pf['vgv_by_strategy']['whole'])}"],
-                ["Net profit (nominal)", _money(pf["profit"])], ["Margin on VGV", _pct(pf["margin"])],
-                [f"NPV at {hurdle:.0%} a year", _money(pf["npv"])], ["IRR per year", _pct(pf["irr"])],
-                ["Maximum cash exposure", f"{_money(pf['max_exposure'])} ({when(pf['exposure_month'])})"],
-                ["Payback", when(pf["payback_month"])]]
+        kpis = [
+            ["Parcels", f"{len(pf['projects'])}"],
+            ["VGV (total sales value)", _money(pf["vgv"])],
+            [
+                "  subdivided / sold whole",
+                f"{_money(pf['vgv_by_strategy']['subdivision'])} / {_money(pf['vgv_by_strategy']['whole'])}",
+            ],
+            ["Net profit (nominal)", _money(pf["profit"])],
+            ["Margin on VGV", _pct(pf["margin"])],
+            [f"NPV at {hurdle:.0%} a year", _money(pf["npv"])],
+            ["IRR per year", _pct(pf["irr"])],
+            ["Maximum cash exposure", f"{_money(pf['max_exposure'])} ({when(pf['exposure_month'])})"],
+            ["Payback", when(pf["payback_month"])],
+        ]
         _table(fig, [0.05, 0.42, 0.38, 0.44], ["Portfolio", "Base case"], kpis, [0.55, 0.45], "lr", font=9)
-        _table(fig, [0.48, 0.62, 0.47, 0.24], ["Scenario", "VGV", "NPV", "IRR", "Max exposure"],
-               [[s["scenario"], _money(s["vgv"]), _money(s["npv"]), _pct(s["irr"]), _money(s["max_exposure"])]
-                for s in scen], [0.22, 0.2, 0.2, 0.14, 0.24], "lrrrr", font=9)
-        fig.text(0.48, 0.735, "Pessimistic and optimistic move lot prices, sales speed, infrastructure cost, holding "
-                             "time, appreciation and default to the ends of their ranges.", fontsize=8, color=GREY,
-                 va="top", wrap=True, parse_math=False)
+        _table(
+            fig,
+            [0.48, 0.62, 0.47, 0.24],
+            ["Scenario", "VGV", "NPV", "IRR", "Max exposure"],
+            [
+                [s["scenario"], _money(s["vgv"]), _money(s["npv"]), _pct(s["irr"]), _money(s["max_exposure"])]
+                for s in scen
+            ],
+            [0.22, 0.2, 0.2, 0.14, 0.24],
+            "lrrrr",
+            font=9,
+        )
+        fig.text(
+            0.48,
+            0.735,
+            "Pessimistic and optimistic move lot prices, sales speed, infrastructure cost, holding "
+            "time, appreciation and default to the ends of their ranges.",
+            fontsize=8,
+            color=GREY,
+            va="top",
+            wrap=True,
+            parse_math=False,
+        )
         labels, _, cum = _quarters(pf)
         ax = fig.add_axes([0.53, 0.43, 0.42, 0.2])
         ax.plot(range(len(cum)), cum, color=BLUE, lw=2)
@@ -219,8 +267,10 @@ def pdf_report(path: Path, pf, scen, sens, strat, memos) -> Path:
             counts[r] = counts.get(r, 0) + 1
         fig.text(0.05, 0.37, "What the numbers say", fontsize=12, weight="bold", color=BLUE, va="top")
         items = conclusions(pf, scen, sens, strat) + [
-            "AI memos (numbers checked against the model): " + ", ".join(f"{v} {k.replace('_', ' ')}"
-                                                                       for k, v in sorted(counts.items())) + "."]
+            "AI memos (numbers checked against the model): "
+            + ", ".join(f"{v} {k.replace('_', ' ')}" for k, v in sorted(counts.items()))
+            + "."
+        ]
         _bullets(fig, 0.05, 0.33, items)
         pdf.savefig(fig)
         plt.close(fig)
@@ -232,20 +282,74 @@ def pdf_report(path: Path, pf, scen, sens, strat, memos) -> Path:
         fig = _page(pdf, "Parcels", f"Hurdle rate {hurdle:.0%} a year. Payback in months after purchase.")
         rows = []
         for p in pf["projects"]:
-            rows.append([p["id"], p["name"], p["kind"], f"{p['area_m2']:,.0f}", p["strategy"],
-                         _money_k(-p["totals"]["acquisition"]), _money_k(p["vgv"]), _money_k(p["npv"]), _pct(p["irr"]),
-                         _money_k(p["max_exposure"]), "-" if p["payback_months"] is None else str(p["payback_months"]),
-                         rec.get(p["id"], "-").replace("_", " ")])
-        _table(fig, [0.03, 0.5, 0.94, 0.35], ["Id", "Parcel", "Kind", "Area m2", "Strategy", "Price", "VGV", "NPV",
-                                               "IRR", "Max exposure", "Payback", "AI memo"], rows,
-               [0.04, 0.17, 0.065, 0.065, 0.08, 0.08, 0.08, 0.08, 0.055, 0.09, 0.06, 0.135], "lllrlrrrrrrl", font=8)
-        fig.text(0.03, 0.42, "Subdivide or sell whole (urban parcels where both are possible)", fontsize=11,
-                 weight="bold", color=BLUE, va="top")
-        _table(fig, [0.03, 0.12, 0.7, 0.28], ["Id", "Parcel", "Area m2", "Rule picks", "NPV subdivided", "IRR",
-                                               "NPV sold whole", "IRR"],
-               [[s["id"], s["name"], f"{s['area_m2']:,.0f}", s["rule"], _money_k(s["npv_subdivision"]),
-                 _pct(s["irr_subdivision"]), _money_k(s["npv_whole"]), _pct(s["irr_whole"])] for s in strat],
-               [0.06, 0.22, 0.1, 0.12, 0.15, 0.08, 0.15, 0.08], "llrlrrrr", font=8)
+            rows.append(
+                [
+                    p["id"],
+                    p["name"],
+                    p["kind"],
+                    f"{p['area_m2']:,.0f}",
+                    p["strategy"],
+                    _money_k(-p["totals"]["acquisition"]),
+                    _money_k(p["vgv"]),
+                    _money_k(p["npv"]),
+                    _pct(p["irr"]),
+                    _money_k(p["max_exposure"]),
+                    "-" if p["payback_months"] is None else str(p["payback_months"]),
+                    rec.get(p["id"], "-").replace("_", " "),
+                ]
+            )
+        _table(
+            fig,
+            [0.03, 0.5, 0.94, 0.35],
+            [
+                "Id",
+                "Parcel",
+                "Kind",
+                "Area m2",
+                "Strategy",
+                "Price",
+                "VGV",
+                "NPV",
+                "IRR",
+                "Max exposure",
+                "Payback",
+                "AI memo",
+            ],
+            rows,
+            [0.04, 0.17, 0.065, 0.065, 0.08, 0.08, 0.08, 0.08, 0.055, 0.09, 0.06, 0.135],
+            "lllrlrrrrrrl",
+            font=8,
+        )
+        fig.text(
+            0.03,
+            0.42,
+            "Subdivide or sell whole (urban parcels where both are possible)",
+            fontsize=11,
+            weight="bold",
+            color=BLUE,
+            va="top",
+        )
+        _table(
+            fig,
+            [0.03, 0.12, 0.7, 0.28],
+            ["Id", "Parcel", "Area m2", "Rule picks", "NPV subdivided", "IRR", "NPV sold whole", "IRR"],
+            [
+                [
+                    s["id"],
+                    s["name"],
+                    f"{s['area_m2']:,.0f}",
+                    s["rule"],
+                    _money_k(s["npv_subdivision"]),
+                    _pct(s["irr_subdivision"]),
+                    _money_k(s["npv_whole"]),
+                    _pct(s["irr_whole"]),
+                ]
+                for s in strat
+            ],
+            [0.06, 0.22, 0.1, 0.12, 0.15, 0.08, 0.15, 0.08],
+            "llrlrrrr",
+            font=8,
+        )
         pdf.savefig(fig)
         plt.close(fig)
         # 4-5. charts
@@ -253,28 +357,85 @@ def pdf_report(path: Path, pf, scen, sens, strat, memos) -> Path:
             pdf.savefig(fig)
             plt.close(fig)
         # 6. key assumptions
-        fig = _page(pdf, "Key assumptions", "Base value and the range used in scenarios and sensitivity. "
-                    "'illustrative' = typical value, not market research. Full list: sheet Assumptions.")
-        keys = ["infra_per_m2", "lot_size_m2", "saleable_ratio", "approval_months", "absorption_months",
-                "itbi_rate", "deed_registry_rate", "iptu_rate", "itr_rate", "sales_tax_rate", "broker_rate",
-                "installments", "monthly_interest", "index_rate_year", "default_rate", "discount_rate_year"]
-        rows = [[k, f"{config.ASSUMPTIONS[k][0]:g}", f"{config.ASSUMPTIONS[k][1]:g} - {config.ASSUMPTIONS[k][2]:g}",
-                 config.ASSUMPTIONS[k][3], textwrap.shorten(config.ASSUMPTIONS[k][4], 95)] for k in keys]
-        _table(fig, [0.03, 0.1, 0.94, 0.76], ["Assumption", "Base", "Range", "Unit", "Source"], rows,
-               [0.14, 0.06, 0.1, 0.17, 0.53], "lrrll", font=7.5)
+        fig = _page(
+            pdf,
+            "Key assumptions",
+            "Base value and the range used in scenarios and sensitivity. "
+            "'illustrative' = typical value, not market research. Full list: sheet Assumptions.",
+        )
+        keys = [
+            "infra_per_m2",
+            "lot_size_m2",
+            "saleable_ratio",
+            "approval_months",
+            "absorption_months",
+            "itbi_rate",
+            "deed_registry_rate",
+            "iptu_rate",
+            "itr_rate",
+            "sales_tax_rate",
+            "broker_rate",
+            "installments",
+            "monthly_interest",
+            "index_rate_year",
+            "default_rate",
+            "discount_rate_year",
+        ]
+        rows = [
+            [
+                k,
+                f"{config.ASSUMPTIONS[k][0]:g}",
+                f"{config.ASSUMPTIONS[k][1]:g} - {config.ASSUMPTIONS[k][2]:g}",
+                config.ASSUMPTIONS[k][3],
+                textwrap.shorten(config.ASSUMPTIONS[k][4], 95),
+            ]
+            for k in keys
+        ]
+        _table(
+            fig,
+            [0.03, 0.1, 0.94, 0.76],
+            ["Assumption", "Base", "Range", "Unit", "Source"],
+            rows,
+            [0.14, 0.06, 0.1, 0.17, 0.53],
+            "lrrll",
+            font=7.5,
+        )
         pdf.savefig(fig)
         plt.close(fig)
         # 7+. memos
         checked = [m for m in memos if m.get("headline")]
         for start in range(0, len(checked), 3):
-            fig = _page(pdf, "Investment memos", "Written by Claude from the model's facts; every number was checked "
-                        "against those facts before the memo was kept.")
+            fig = _page(
+                pdf,
+                "Investment memos",
+                "Written by Claude from the model's facts; every number was checked "
+                "against those facts before the memo was kept.",
+            )
             y = 0.85
-            for m in checked[start:start + 3]:
-                fig.text(0.05, y, _tex(f"{m['facts']['parcel']} - {m['recommendation'].replace('_', ' ')}"),
-                         fontsize=11, weight="bold", color=BLUE, va="top")
-                y = _bullets(fig, 0.05, y - 0.035, [m["headline"], m["thesis"]] + [f"Risk: {r}" for r in m["risks"]]
-                             + [f"Condition: {c}" for c in m["conditions"]], width=165, size=8.5, step=0.03) - 0.02
+            for m in checked[start : start + 3]:
+                fig.text(
+                    0.05,
+                    y,
+                    _tex(f"{m['facts']['parcel']} - {m['recommendation'].replace('_', ' ')}"),
+                    fontsize=11,
+                    weight="bold",
+                    color=BLUE,
+                    va="top",
+                )
+                y = (
+                    _bullets(
+                        fig,
+                        0.05,
+                        y - 0.035,
+                        [m["headline"], m["thesis"]]
+                        + [f"Risk: {r}" for r in m["risks"]]
+                        + [f"Condition: {c}" for c in m["conditions"]],
+                        width=165,
+                        size=8.5,
+                        step=0.03,
+                    )
+                    - 0.02
+                )
             pdf.savefig(fig)
             plt.close(fig)
     return path
@@ -282,26 +443,56 @@ def pdf_report(path: Path, pf, scen, sens, strat, memos) -> Path:
 
 def dashboard(path: Path, pf, scen, sens, strat, memos) -> Path:
     quarters, q_net, q_cum = _quarters(pf)
-    mi = lambda v: round(v / 1e6, 2)  # noqa: E731
+    mi = lambda v: round(v / 1e6, 2)
     data = {
-        "kpis": {"VGV": _money(pf["vgv"]), "Net profit": _money(pf["profit"]), "Margin": _pct(pf["margin"]),
-                 f"NPV at {config.base()['discount_rate_year']:.0%}": _money(pf["npv"]), "IRR": _pct(pf["irr"]),
-                 "Max exposure": _money(pf["max_exposure"])},
-        "quarters": quarters, "q_net": q_net, "q_cum": q_cum,
+        "kpis": {
+            "VGV": _money(pf["vgv"]),
+            "Net profit": _money(pf["profit"]),
+            "Margin": _pct(pf["margin"]),
+            f"NPV at {config.base()['discount_rate_year']:.0%}": _money(pf["npv"]),
+            "IRR": _pct(pf["irr"]),
+            "Max exposure": _money(pf["max_exposure"]),
+        },
+        "quarters": quarters,
+        "q_net": q_net,
+        "q_cum": q_cum,
         "exposure": {"value": mi(-pf["max_exposure"]), "month": when(pf["exposure_month"])},
         "findings": conclusions(pf, scen, sens, strat),
-        "parcels": [{"id": p["id"], "name": p["name"], "strategy": p["strategy"], "vgv": mi(p["vgv"]),
-                     "npv": mi(p["npv"]), "irr": None if p["irr"] is None else round(p["irr"] * 100, 1),
-                     "payback": p["payback_months"],
-                     "rec": next((m.get("recommendation") for m in memos if m["id"] == p["id"]), None) or "-"}
-                    for p in pf["projects"]],
-        "scenarios": [{"name": s["scenario"], "npv": mi(s["npv"]),
-                       "irr": None if s["irr"] is None else round(s["irr"] * 100, 1)} for s in scen],
-        "tornado": [{"name": f"{label(s['assumption'])} ({value(s['assumption'], s['low'])} to "
-                             f"{value(s['assumption'], s['high'])})", "low": mi(s["npv_low"] - s["base_npv"]),
-                     "high": mi(s["npv_high"] - s["base_npv"])} for s in sens],
-        "memos": [{"id": m["id"], "rec": m.get("recommendation", "-"), "headline": m.get("headline", m["status"]),
-                   "thesis": m.get("thesis", "")} for m in memos],
+        "parcels": [
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "strategy": p["strategy"],
+                "vgv": mi(p["vgv"]),
+                "npv": mi(p["npv"]),
+                "irr": None if p["irr"] is None else round(p["irr"] * 100, 1),
+                "payback": p["payback_months"],
+                "rec": next((m.get("recommendation") for m in memos if m["id"] == p["id"]), None) or "-",
+            }
+            for p in pf["projects"]
+        ],
+        "scenarios": [
+            {"name": s["scenario"], "npv": mi(s["npv"]), "irr": None if s["irr"] is None else round(s["irr"] * 100, 1)}
+            for s in scen
+        ],
+        "tornado": [
+            {
+                "name": f"{label(s['assumption'])} ({value(s['assumption'], s['low'])} to "
+                f"{value(s['assumption'], s['high'])})",
+                "low": mi(s["npv_low"] - s["base_npv"]),
+                "high": mi(s["npv_high"] - s["base_npv"]),
+            }
+            for s in sens
+        ],
+        "memos": [
+            {
+                "id": m["id"],
+                "rec": m.get("recommendation", "-"),
+                "headline": m.get("headline", m["status"]),
+                "thesis": m.get("thesis", ""),
+            }
+            for m in memos
+        ],
     }
     html = TEMPLATE.replace("__DATA__", json.dumps(data, ensure_ascii=False))
     path.parent.mkdir(parents=True, exist_ok=True)

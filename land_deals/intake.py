@@ -1,5 +1,6 @@
 """AI intake: a free-text description of a parcel becomes structured premises, which a person confirms before they
 enter the portfolio. The model copies values with a quote; Python converts units, validates and fills defaults."""
+
 from __future__ import annotations
 
 import json
@@ -30,13 +31,27 @@ Rules:
 
 
 def schema() -> dict:
-    return {"type": "object", "properties": {
-        "items": {"type": "array", "items": {"type": "object", "properties": {
-            "field": {"type": "string", "enum": list(FIELDS)},
-            "value": {"type": "string"}, "quote": {"type": "string"}},
-            "required": ["field", "value", "quote"], "additionalProperties": False}},
-        "notes": {"type": "string"}},
-        "required": ["items", "notes"], "additionalProperties": False}
+    return {
+        "type": "object",
+        "properties": {
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "field": {"type": "string", "enum": list(FIELDS)},
+                        "value": {"type": "string"},
+                        "quote": {"type": "string"},
+                    },
+                    "required": ["field", "value", "quote"],
+                    "additionalProperties": False,
+                },
+            },
+            "notes": {"type": "string"},
+        },
+        "required": ["items", "notes"],
+        "additionalProperties": False,
+    }
 
 
 def answer_problems(answer: dict) -> list[str]:
@@ -95,20 +110,34 @@ def to_parcel(answer: dict, text: str) -> dict:
     for f, v in (("area", area), ("acquisition_price", price), ("raw_price_m2", raw), ("lot_price_m2", lot)):
         source[f] = "text" if v else "default"
     if not raw and area and price:
-        raw = round(price / area, 2)       # default: bought at market
-    parcel = {"name": got["name"]["value"].strip() or "New parcel", "kind": kind,
-              "town": got["town"]["value"].strip() or "not given", "area_m2": area, "acquisition_price": price,
-              "acquisition_month": 0, "raw_price_m2": raw, "lot_price_m2": lot, "overrides": {}}
-    return {"parcel": parcel, "source": source, "problems": problems, "notes": answer.get("notes", ""),
-            "quotes": {f: it["quote"] for f, it in got.items()}}
+        raw = round(price / area, 2)  # default: bought at market
+    parcel = {
+        "name": got["name"]["value"].strip() or "New parcel",
+        "kind": kind,
+        "town": got["town"]["value"].strip() or "not given",
+        "area_m2": area,
+        "acquisition_price": price,
+        "acquisition_month": 0,
+        "raw_price_m2": raw,
+        "lot_price_m2": lot,
+        "overrides": {},
+    }
+    return {
+        "parcel": parcel,
+        "source": source,
+        "problems": problems,
+        "notes": answer.get("notes", ""),
+        "quotes": {f: it["quote"] for f, it in got.items()},
+    }
 
 
 def run(llm: LLM, path: Path) -> dict:
     text = path.read_text(encoding="utf-8")
     lines = "\n".join(f"- {k}: {v}" for k, v in FIELDS.items())
     prompt = f"Fields (one item per field):\n{lines}\n\n<description>\n{text}\n</description>"
-    answer = llm.ask(f"intake-{path.stem}", SYSTEM, prompt, schema(), check=answer_problems,
-                     max_tokens=config.MAX_TOKENS["intake"])
+    answer = llm.ask(
+        f"intake-{path.stem}", SYSTEM, prompt, schema(), check=answer_problems, max_tokens=config.MAX_TOKENS["intake"]
+    )
     return {"file": path.name, **to_parcel(answer, text)}
 
 

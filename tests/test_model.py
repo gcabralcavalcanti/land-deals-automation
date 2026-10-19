@@ -1,4 +1,5 @@
 """Offline tests: no network, no API key."""
+
 import json
 from types import SimpleNamespace
 
@@ -71,7 +72,7 @@ def test_subdivision_details(parcels):
     assert r["lots"] == int(p["area_m2"] * a["saleable_ratio"] // a["lot_size_m2"])
     assert r["launch"] - r["start"] == a["approval_months"]
     receipts = sum(r["totals"][c] for c in model.INFLOWS)
-    assert receipts > r["vgv"]                      # interest and correction on installments
+    assert receipts > r["vgv"]  # interest and correction on installments
     assert -r["totals"]["sales_tax"] == pytest.approx(receipts * a["sales_tax_rate"])
     no_default = model.project(p, {"default_rate": 0.0})
     assert no_default["totals"]["installments"] > r["totals"]["installments"]
@@ -110,9 +111,11 @@ class FakeClient:
 
     def create(self, **kw):
         self.calls += 1
-        return SimpleNamespace(stop_reason="end_turn",
-                               content=[SimpleNamespace(type="text", text=json.dumps(self.answers.pop(0)))],
-                               usage=SimpleNamespace(input_tokens=800, output_tokens=300))
+        return SimpleNamespace(
+            stop_reason="end_turn",
+            content=[SimpleNamespace(type="text", text=json.dumps(self.answers.pop(0)))],
+            usage=SimpleNamespace(input_tokens=800, output_tokens=300),
+        )
 
 
 def fake_llm(tmp_path, answers, max_calls=10):
@@ -129,11 +132,15 @@ def test_intake_units_and_defaults(tmp_path):
     assert intake.parse_money("R$ 650 mil") == 650_000
     assert intake.parse_money("R$ 540.000") == 540_000
     text = "Terreno urbano de 1.800 m² no Município F. Compra por R$ 540.000."
-    items = [{"field": "name", "value": "Terreno F", "quote": ""}, {"field": "kind", "value": "urban", "quote": ""},
-             {"field": "town", "value": "Município F", "quote": "no Município F"},
-             {"field": "area", "value": "1.800 m²", "quote": "Terreno urbano de 1.800 m²"},
-             {"field": "acquisition_price", "value": "R$ 540.000", "quote": "Compra por R$ 540.000"},
-             {"field": "raw_price_m2", "value": "", "quote": ""}, {"field": "lot_price_m2", "value": "", "quote": ""}]
+    items = [
+        {"field": "name", "value": "Terreno F", "quote": ""},
+        {"field": "kind", "value": "urban", "quote": ""},
+        {"field": "town", "value": "Município F", "quote": "no Município F"},
+        {"field": "area", "value": "1.800 m²", "quote": "Terreno urbano de 1.800 m²"},
+        {"field": "acquisition_price", "value": "R$ 540.000", "quote": "Compra por R$ 540.000"},
+        {"field": "raw_price_m2", "value": "", "quote": ""},
+        {"field": "lot_price_m2", "value": "", "quote": ""},
+    ]
     path = tmp_path / "t.txt"
     path.write_text(text, encoding="utf-8")
     res = intake.run(fake_llm(tmp_path, [{"items": items[:3], "notes": ""}, {"items": items, "notes": ""}]), path)
@@ -156,9 +163,13 @@ def test_intake_rejects_invented_quote(tmp_path):
 
 
 def _memo_answer(**kw):
-    base = {"recommendation": "invest_with_conditions", "headline": "Subdivision clears the hurdle.",
-            "thesis": "The plan works if lots sell on time.", "risks": ["Slower sales", "Infrastructure overrun"],
-            "conditions": []}
+    base = {
+        "recommendation": "invest_with_conditions",
+        "headline": "Subdivision clears the hurdle.",
+        "thesis": "The plan works if lots sell on time.",
+        "risks": ["Slower sales", "Infrastructure overrun"],
+        "conditions": [],
+    }
     return {**base, **kw}
 
 
@@ -167,9 +178,13 @@ def test_memo_number_check(pf, tmp_path):
     fs = memo.facts(p, 0.14)
     irr = fs["IRR (per year)"]
     assert memo.check(_memo_answer(thesis=f"IRR of {irr} beats the hurdle."), fs, p["npv"]) == []
-    assert memo.check(_memo_answer(thesis="IRR of 99.9% beats the hurdle."), fs, p["npv"]) == ["number 99.9 is not in FACTS"]
+    assert memo.check(_memo_answer(thesis="IRR of 99.9% beats the hurdle."), fs, p["npv"]) == [
+        "number 99.9 is not in FACTS"
+    ]
     neg = min(pf["projects"], key=lambda x: x["npv"])
-    assert "negative NPV" in " ".join(memo.check(_memo_answer(recommendation="invest"), memo.facts(neg, 0.14), neg["npv"]))
+    assert "negative NPV" in " ".join(
+        memo.check(_memo_answer(recommendation="invest"), memo.facts(neg, 0.14), neg["npv"])
+    )
 
 
 def test_memo_retry_then_reject(pf, tmp_path):
@@ -197,17 +212,27 @@ def test_recordings_and_cap(pf, tmp_path):
 # ------------------------------------------------------------------------------------- outputs
 def test_outputs(parcels, pf, tmp_path):
     from land_deals import findings
+
     scen, sens, strat = model.scenarios(parcels), model.sensitivity(parcels), model.strategy_comparison(parcels)
     memos = [{"id": p["id"], "status": "not generated", "facts": {}} for p in pf["projects"]]
     found = findings.conclusions(pf, scen, sens, strat)
     xl = workbook.build(tmp_path / "w.xlsx", parcels, pf, scen, sens, strat, memos, found)
     wb = load_workbook(xl)
-    assert wb.sheetnames == ["Summary", "Cash flow (quarterly)", "Parcels", "Assumptions", "Costs",
-                             "Cash flow (monthly)", "Sensitivity", "Strategy", "Memos"]
+    assert wb.sheetnames == [
+        "Summary",
+        "Cash flow (quarterly)",
+        "Parcels",
+        "Assumptions",
+        "Costs",
+        "Cash flow (monthly)",
+        "Sensitivity",
+        "Strategy",
+        "Memos",
+    ]
     assert wb["Parcels"].max_row == 11 and wb["Cash flow (monthly)"].max_row == len(pf["months"]) + 1
     assert wb["Assumptions"].max_row == len(config.ASSUMPTIONS) + 1
     for ws in wb.worksheets[1:]:
-        assert ws.freeze_panes, ws.title                      # header row stays visible
+        assert ws.freeze_panes, ws.title  # header row stays visible
     assert wb["Parcels"]["F2"].number_format.startswith('"R$"') and wb["Parcels"]["L2"].number_format == "0.0%"
     assert wb["Summary"]["A24"].value == f"- {found[0]}"
     charts_ = [c for ws in wb.worksheets for c in ws._charts]
@@ -221,6 +246,7 @@ def test_outputs(parcels, pf, tmp_path):
 
 def test_conclusions_follow_the_numbers(parcels, pf):
     from land_deals import findings
+
     scen, sens, strat = model.scenarios(parcels), model.sensitivity(parcels), model.strategy_comparison(parcels)
     text = " ".join(findings.conclusions(pf, scen, sens, strat))
     assert findings.mi(pf["max_exposure"]) in text and findings.when(pf["payback_month"]) in text
