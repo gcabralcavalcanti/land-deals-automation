@@ -1,4 +1,4 @@
-"""Static outputs: PNG charts, the PDF report (matplotlib) and the HTML dashboard (Chart.js, no build step).
+"""Static outputs: the PDF report (matplotlib) and the HTML dashboard (Chart.js, no build step).
 The PDF and the dashboard draw the same charts from the same numbers, including the conclusions in findings.py."""
 
 from __future__ import annotations
@@ -153,21 +153,6 @@ def fig_scenarios_tornado(scen, sens, figsize=(11, 4.6)):
     a2.legend(fontsize=8, frameon=False, loc="lower right")
     fig.tight_layout()
     return fig
-
-
-def save_pngs(pf, scen, sens, out: Path) -> list[Path]:
-    out.mkdir(parents=True, exist_ok=True)
-    paths = []
-    for name, fig in (
-        ("cash_flow", fig_cash(pf)),
-        ("parcels", fig_parcels(pf)),
-        ("scenarios_sensitivity", fig_scenarios_tornado(scen, sens)),
-    ):
-        p = out / f"{name}.png"
-        fig.savefig(p, dpi=110)
-        plt.close(fig)
-        paths.append(p)
-    return paths
 
 
 # ------------------------------------------------------------------------------------------- PDF

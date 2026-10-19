@@ -1,7 +1,7 @@
 """Wrapper around the Claude API.
 
 - JSON answers constrained by a JSON Schema (structured outputs) and validated again locally.
-- Every answer is recorded under recordings/<task>-<hash>.json. The same request is never paid twice,
+- Every answer is recorded under data/recorded/<task>-<hash>.json. The same request is never paid twice,
   and without an API key the recordings replay the run (demo mode).
 - Call cap per run, timeout, SDK retries, one schema retry, a JSON log line per call with tokens and cost.
 - The key comes from ANTHROPIC_API_KEY (process, .env or the Windows user environment). It is never printed.

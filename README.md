@@ -1,27 +1,33 @@
 # land-deals-automation
 
-Cost x return model for a portfolio of land parcels: subdivide or sell whole, monthly cash flow, NPV, IRR,
-payback and maximum cash exposure, with scenarios, sensitivity, AI-written memos checked against the numbers, and
-the results in a PDF report, an Excel workbook and an HTML dashboard.
+A model that tells a land developer whether each plot is worth buying, whether to split it into lots or sell it
+whole, how much cash the business will need before money comes back, and when it comes back.
 
 ![Synthetic data — no private records](https://img.shields.io/badge/data-synthetic%20%E2%80%94%20no%20private%20records-e07b39)
 ![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-6f42c1)
 
+## Why it matters
+
+Land development ties up money for years: you buy the land, pay for approvals, streets, water and power, and only
+then start selling, often in monthly installments. A deal that looks profitable on paper can still be a bad use of
+money if the cash comes back too slowly. This model puts every cost and every payment on a monthly calendar, so
+that question has a number.
+
 ## Results
 
-On the synthetic portfolio of 10 parcels (`reports/summary.json`, full report in [`final-report.pdf`](final-report.pdf)):
+For a made-up portfolio of 10 plots (full report: [`final-report.pdf`](final-report.pdf)):
 
-| Portfolio | Base | Pessimistic | Optimistic |
+| | Expected case | Bad case | Good case |
 |---|---|---|---|
-| VGV (total sales value) | R$ 59.5 million | R$ 50.4 million | R$ 65.6 million |
-| NPV at 14% a year | R$ 2.2 million | R$ -11.8 million | R$ 12.3 million |
-| IRR per year | 16.6% | 2.8% | 31.5% |
-| Maximum cash exposure | R$ 28.4 million (Sep 2028) | R$ 39.9 million | R$ 20.4 million |
-| Payback (months after the first purchase) | 61 | 99 | 44 |
+| Total sales | R$ 59.5 million | R$ 50.4 million | R$ 65.6 million |
+| Value created, after a 14% a year required return | R$ 2.2 million | R$ -11.8 million | R$ 12.3 million |
+| Return per year | 16.6% | 2.8% | 31.5% |
+| Most cash tied up at one time | R$ 28.4 million | R$ 39.9 million | R$ 20.4 million |
+| Months until the money is back | 61 | 99 | 44 |
 
-- The 4 subdivisions carry the portfolio. The 6 parcels sold whole return 4.1% to 10.9% a year, all below the 14%
-  hurdle: holding land costs maintenance and tax while it appreciates more slowly than the hurdle rate.
-- Infrastructure cost moves NPV the most: from R$ 5.9 million at R$ 80/m2 to R$ -4.0 million at R$ 160/m2.
+- Splitting the large plots into lots is what makes money. The six plots resold whole earn less than the 14%
+  required return: holding land costs upkeep and property tax every month, and the land gains value more slowly.
+- The cost of building streets and utilities moves the result more than anything else.
 
 ![Dashboard](docs/dashboard.jpg)
 
@@ -32,57 +38,45 @@ pip install -r requirements.txt
 python demo.py
 ```
 
-No API key needed: the demo replays the recorded AI answers. It writes `final-report.pdf` (executive summary,
-cash flow, parcels, scenarios and sensitivity, key assumptions, memos), `output/land_portfolio.xlsx`,
-`output/dashboard.html` (static, works on GitHub Pages) and `reports/` (memos, summary, charts).
-Tests: `python -m pytest -q`, offline.
+Runs without an API key, replaying recorded answers. Set `ANTHROPIC_API_KEY` to call Claude live.
 
-Single steps: `python -m land_deals run`, `python -m land_deals intake data/intake/gleba-12ha.txt [--accept]`.
-To call the API live, set `ANTHROPIC_API_KEY` (see `.env.example`) and add `--live`.
+It writes `final-report.pdf` and, in `output/`, an Excel workbook, a dashboard page (`dashboard.html`) and the
+investment notes for each plot. Tests: `python -m pytest -q`.
 
 ## How it works
 
-1. **Strategy.** Urban or urban-expansion parcels of at least 20,000 m2 are subdivided; the rest are sold whole.
-   The workbook's `Strategy` sheet shows both options for every urban parcel.
-2. **Costs.** Purchase, ITBI, deed and registry, CAR for rural land; maintenance and IPTU or ITR while land is
-   unsold; for subdivisions, topography and approval, infrastructure (streets, drainage, water, sewage, power) with
-   site labor, fence and gatehouse, marketing; broker fee and Lucro Presumido taxes on receipts.
-3. **Sales and receipts.** Lots sell evenly over 36 months (24 to 48) from approval; a whole parcel sells after
-   a holding period. Part cash, part financed: down payment plus Price-table installments with monthly interest,
-   corrected once a year by a fixed IPCA rate, net of a small default rate.
-4. **Metrics.** Monthly cash flow per parcel and for the portfolio; NPV, IRR, payback, margin, maximum exposure;
-   three scenarios and a sensitivity analysis that moves one assumption at a time.
-5. **AI.** Claude turns a free-text parcel description into premises (each with the passage it came from; units
-   converted by code; nothing enters the portfolio until a person accepts it), and writes a memo per parcel in which
-   every number must be one of the model's facts.
-6. **Checks.** `tests/test_independent.py` rebuilds three parcels with numpy from this description and compares
-   every cost and receipt category, the monthly cash flow, NPV, IRR (from the roots of the NPV polynomial), payback
-   and exposure. 23 tests in total.
+1. **Split or sell whole.** Large urban plots are split into lots; small and rural ones are sold whole. The
+   workbook shows both options for every urban plot, so the rule can be challenged.
+2. **Costs, month by month.** Purchase taxes and registry, upkeep and property tax while the land is unsold, and
+   for lots: surveys and approvals, streets and utilities, marketing, sales commission and taxes on sales.
+3. **Sales and payments.** Lots sell over about three years. Buyers pay part in cash and part in monthly
+   installments with interest, adjusted for inflation once a year; a small share is never paid.
+4. **Results.** Value created, return per year, cash tied up, months to get the money back, with a bad, an expected
+   and a good case, and a chart of which assumption changes the answer most.
+5. **AI where it helps.** Claude reads a plot description written in plain Portuguese ("12 hectares, should close
+   at R$ 3.8 million...") and fills in the model's inputs, which a person confirms. It also writes a short
+   investment note per plot; the code rejects any note that quotes a number the model did not compute.
+6. **Checked twice.** A separate calculation rebuilds three plots from scratch and must match the model.
 
-Every assumption is in `land_deals/config.py` with a base value, a range and a source. Public rules are cited
-(Lei 9.393/1996 for ITR, Lei 9.249/1995 and Lei 9.718/1998 for presumed-profit taxes, CTN art. 32, Lei 6.766/1979,
-SP Lei 11.331/2002 for registry fees); everything else is marked "illustrative".
+Every assumption (tax rates, building costs, sales speed, interest) is in `land_deals/config.py`, with a range and
+where it comes from: the law that sets it, or "illustrative" when it is a typical value.
 
 ## Data
 
-All data is synthetic, generated by `generate_data.py`: 10 fictitious parcels (towns, names, areas and prices
-invented) and three free-text descriptions in `data/intake/`. No record of a real company, client or deal is used.
-Illustrative assumptions are typical values, not market research.
+All data is synthetic, generated by `generate_data.py`: the plots, towns, prices and the three plot descriptions in
+`data/intake/` are invented. No real company, client or deal is used.
 
 ## Limits
 
-- A decision aid to be fed with real quotes: infrastructure budget, lot prices from comparable launches, the
-  company's hurdle rate.
-- Sales are spread evenly over the absorption period; no launch peak or real sales curve yet.
-- The correction index is a fixed yearly rate, not the real IPCA or IGP-M series. Only the presumed-profit tax
-  regime. Property tax is charged on the purchase price. Cancellations (distrato) and mixed strategies (subdivide
-  part, sell the rest) are not modeled.
+- Illustrative costs are typical values, not quotes; a real decision needs real budgets and local lot prices.
+- Lots sell at an even pace; there is no launch rush or real sales history.
+- Inflation is a fixed yearly rate, not the published index. Cancelled sales and mixed plans (split part of a plot,
+  sell the rest) are not modelled.
 
 ## How AI was used
 
 I use Claude (Claude Code and the API) for coding, review and documentation. The questions, modelling choices,
-validation and conclusions are mine. In the product, `claude-haiku-5-5` reads the intake text and writes the memos,
-with structured output, at most 20 calls per run and every accepted answer recorded, so the same input is never paid
-twice. The recorded answers cost about USD 0.004.
+validation and conclusions are mine. In the product, the smallest Claude model reads plot descriptions and writes
+the investment notes, with a cap on calls per run; every answer is saved, so the same question is never paid twice.
 
 MIT License.

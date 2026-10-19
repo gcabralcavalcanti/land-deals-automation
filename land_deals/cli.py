@@ -45,7 +45,6 @@ def run_all(llm: LLM | None) -> dict:
         ),
         "dashboard": charts.dashboard(config.OUTPUT / "dashboard.html", pf, scen, sens, strat, memos),
         "pdf": charts.pdf_report(config.FINAL_REPORT, pf, scen, sens, strat, memos),
-        "charts": charts.save_pngs(pf, scen, sens, config.REPORTS / "charts"),
     }
     summary = {
         "parcels": len(parcels),
@@ -63,9 +62,9 @@ def run_all(llm: LLM | None) -> dict:
         ],
         "memos": {m["id"]: {"recommendation": m.get("recommendation"), "status": m["status"]} for m in memos},
     }
-    config.REPORTS.mkdir(exist_ok=True)
-    (config.REPORTS / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8")
-    (config.REPORTS / "memos.md").write_text(memos_md(memos), encoding="utf-8")
+    config.OUTPUT.mkdir(exist_ok=True)
+    (config.OUTPUT / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8")
+    (config.OUTPUT / "memos.md").write_text(memos_md(memos), encoding="utf-8")
     return {
         "summary": summary,
         "files": {

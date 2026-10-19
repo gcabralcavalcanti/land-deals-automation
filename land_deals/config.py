@@ -11,11 +11,10 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 PORTFOLIO = DATA / "portfolio.json"  # synthetic parcels (versioned), written by generate_data.py
 INTAKE = DATA / "intake"  # free-text parcel descriptions for the AI intake (versioned)
-RECORDINGS = ROOT / "recordings"  # recorded LLM answers: response cache + demo mode (versioned)
-REPORTS = ROOT / "reports"
+RECORDINGS = DATA / "recorded"  # recorded LLM answers: response cache + demo mode (versioned)
 FINAL_REPORT = ROOT / "final-report.pdf"
 OUTPUT = ROOT / "output"
-LOGS = ROOT / "logs"  # one JSON line per LLM call (not versioned)
+LOGS = OUTPUT / "logs"  # one JSON line per LLM call (not versioned)
 
 START = (2026, 1)  # month 0 of the model (year, month)
 
