@@ -5,43 +5,43 @@
   "subdivision": 52157100,
   "whole": 7321148
  },
- "profit": 24031663,
- "margin": 0.404,
- "npv": 2308450,
- "irr": 0.1668,
- "max_exposure": 28551457,
+ "profit": 23701434,
+ "margin": 0.3985,
+ "npv": 2189659,
+ "irr": 0.1656,
+ "max_exposure": 28399679,
  "exposure_month": "2028-09",
  "payback_month": "2031-02",
  "scenarios": [
   {
    "scenario": "pessimistic",
    "vgv": 50388091.465,
-   "profit": 5193256.8807,
-   "npv": -11875307.4467,
-   "irr": 0.0282,
-   "max_exposure": 40125941.3469,
-   "payback_month": 98,
-   "margin": 0.1031
+   "profit": 5094869.9787,
+   "npv": -11833444.1999,
+   "irr": 0.0279,
+   "max_exposure": 39921914.8394,
+   "payback_month": 99,
+   "margin": 0.1011
   },
   {
    "scenario": "base",
    "vgv": 59478247.7646,
-   "profit": 24031662.7961,
-   "npv": 2308450.3986,
-   "irr": 0.1668,
-   "max_exposure": 28551456.693,
+   "profit": 23701433.6153,
+   "npv": 2189659.0795,
+   "irr": 0.1656,
+   "max_exposure": 28399679.2342,
    "payback_month": 61,
-   "margin": 0.404
+   "margin": 0.3985
   },
   {
    "scenario": "optimistic",
    "vgv": 65643851.317,
-   "profit": 36100599.5716,
-   "npv": 12464834.8829,
-   "irr": 0.3167,
-   "max_exposure": 20520236.1162,
+   "profit": 35661661.1075,
+   "npv": 12254688.4625,
+   "irr": 0.3148,
+   "max_exposure": 20382503.8618,
    "payback_month": 44,
-   "margin": 0.5499
+   "margin": 0.5433
   }
  ],
  "memos": {
@@ -78,7 +78,7 @@
    "status": "checked"
   },
   "T09": {
-   "recommendation": "invest",
+   "recommendation": "invest_with_conditions",
    "status": "checked"
   },
   "T10": {

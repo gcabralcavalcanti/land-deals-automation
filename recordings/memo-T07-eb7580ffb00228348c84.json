@@ -1,0 +1,23 @@
+{
+ "task": "memo-T07",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:57+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T07 Terreno Esquina Comercial\n- kind: urban\n- strategy: whole\n- area: 4,000 m2\n- acquisition price: R$ 1,074,000\n- VGV (total sales value): R$ 1,476,098\n- net profit (nominal): R$ 179,058\n- margin on VGV: 12.1%\n- NPV at the 14.0% hurdle rate: R$ -231,538\n- IRR (per year): 5.2%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 1,158,780\n- payback: 40 months\n- cash flow duration: 43 months\n- holding costs (maintenance + property tax): R$ 36,450"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T07 Terreno Esquina Comercial clears no hurdle: NPV at 14.0% is R$ -231,538, so we should pass.",
+  "thesis": "The parcel costs R$ 1,074,000 and sells for a VGV of R$ 1,476,098. Net profit is R$ 179,058, a margin of 12.1% on VGV. The IRR is only 5.2% per year, well below the 14.0% hurdle rate. Payback takes 40 months over a 43-month cash flow, which ties up capital for too long.",
+  "risks": [
+   "Returns fall far short of the 14.0% hurdle rate, with an IRR of 5.2% per year.",
+   "Maximum cash exposure reaches R$ 1,158,780, and holding costs of R$ 36,450 erode the margin.",
+   "Payback at 40 months leaves little room for any sales delay."
+  ],
+  "conditions": [
+   "Acquisition price falls enough to bring NPV at 14.0% to zero or better.",
+   "Sales value rises or holding costs fall enough to lift the IRR well above 14.0%."
+  ]
+ }
+}

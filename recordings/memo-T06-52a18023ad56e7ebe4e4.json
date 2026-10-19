@@ -1,0 +1,22 @@
+{
+ "task": "memo-T06",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:54+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T06 Área Avenida Central\n- kind: urban\n- strategy: whole\n- area: 10,000 m2\n- acquisition price: R$ 1,113,000\n- VGV (total sales value): R$ 1,723,657\n- net profit (nominal): R$ 347,299\n- margin on VGV: 20.1%\n- NPV at the 14.0% hurdle rate: R$ -130,838\n- IRR (per year): 9.4%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 1,214,910\n- payback: 38 months\n- cash flow duration: 43 months\n- holding costs (maintenance + property tax): R$ 51,825"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T06 Área Avenida Central destroys value at our 14.0% hurdle rate, so we should pass.",
+  "thesis": "The parcel shows a net profit of R$ 347,299 on a R$ 1,113,000 acquisition, a 20.1% margin on VGV. But the IRR is 9.4% per year, below the 14.0% hurdle rate. At that hurdle the NPV is R$ -130,838, so the deal loses value after capital cost. Payback takes 38 months over a 43-month cash flow.",
+  "risks": [
+   "Returns fall short of the hurdle: IRR of 9.4% per year against 14.0%.",
+   "Long capital tie-up: maximum cash exposure of R$ 1,214,910 for up to 43 months.",
+   "Holding costs of R$ 51,825 erode the margin over the cash flow period."
+  ],
+  "conditions": [
+   "Acquisition price is renegotiated low enough to lift NPV at the 14.0% hurdle rate to zero or above."
+  ]
+ }
+}

@@ -196,15 +196,34 @@ def test_recordings_and_cap(pf, tmp_path):
 
 # ------------------------------------------------------------------------------------- outputs
 def test_outputs(parcels, pf, tmp_path):
+    from land_deals import findings
     scen, sens, strat = model.scenarios(parcels), model.sensitivity(parcels), model.strategy_comparison(parcels)
     memos = [{"id": p["id"], "status": "not generated", "facts": {}} for p in pf["projects"]]
-    xl = workbook.build(tmp_path / "w.xlsx", parcels, pf, scen, sens, strat, memos)
+    found = findings.conclusions(pf, scen, sens, strat)
+    xl = workbook.build(tmp_path / "w.xlsx", parcels, pf, scen, sens, strat, memos, found)
     wb = load_workbook(xl)
-    assert wb.sheetnames == ["Summary", "Assumptions", "Parcels", "Costs", "Cash flow", "Sensitivity", "Strategy", "Memos"]
-    assert wb["Parcels"].max_row == 11 and wb["Cash flow"].max_row == len(pf["months"]) + 1
+    assert wb.sheetnames == ["Summary", "Cash flow (quarterly)", "Parcels", "Assumptions", "Costs",
+                             "Cash flow (monthly)", "Sensitivity", "Strategy", "Memos"]
+    assert wb["Parcels"].max_row == 11 and wb["Cash flow (monthly)"].max_row == len(pf["months"]) + 1
     assert wb["Assumptions"].max_row == len(config.ASSUMPTIONS) + 1
+    for ws in wb.worksheets[1:]:
+        assert ws.freeze_panes, ws.title                      # header row stays visible
+    assert wb["Parcels"]["F2"].number_format.startswith('"R$"') and wb["Parcels"]["L2"].number_format == "0.0%"
+    assert wb["Summary"]["A24"].value == f"- {found[0]}"
+    charts_ = [c for ws in wb.worksheets for c in ws._charts]
+    assert len(charts_) == 4
     html = charts.dashboard(tmp_path / "d.html", pf, scen, sens, strat, memos).read_text(encoding="utf-8")
-    assert "chart.umd.min.js" in html and '"parcels"' in html
+    assert "chart.umd.min.js" in html and found[0] in html and "What the numbers say" in html
     pdf = charts.pdf_report(tmp_path / "r.pdf", pf, scen, sens, strat, memos)
     assert pdf.read_bytes()[:4] == b"%PDF"
     assert parse_number("R$ 1.250.000,00") == 1250000
+
+
+def test_conclusions_follow_the_numbers(parcels, pf):
+    from land_deals import findings
+    scen, sens, strat = model.scenarios(parcels), model.sensitivity(parcels), model.strategy_comparison(parcels)
+    text = " ".join(findings.conclusions(pf, scen, sens, strat))
+    assert findings.mi(pf["max_exposure"]) in text and findings.when(pf["payback_month"]) in text
+    assert findings.label(sens[0]["assumption"]) in text
+    subs = sum(1 for p in pf["projects"] if p["strategy"] == "subdivision")
+    assert f"The {subs} subdivisions" in text

@@ -1,0 +1,23 @@
+{
+ "task": "memo-T02",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:44+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T02 Área Jardim Novo\n- kind: urban\n- strategy: subdivision\n- area: 33,800 m2\n- acquisition price: R$ 2,648,000\n- VGV (total sales value): R$ 8,582,700\n- net profit (nominal): R$ 3,572,060\n- margin on VGV: 41.6%\n- NPV at the 14.0% hurdle rate: R$ 315,229\n- IRR (per year): 16.2%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 4,328,382\n- payback: 56 months\n- cash flow duration: 108 months\n- holding costs (maintenance + property tax): R$ 144,865\n- infrastructure and site labor: R$ 2,387,880\n- lots: 67 lots\n- price per lot: R$ 128,100\n- months from purchase to launch: 12 months"
+ },
+ "answer": {
+  "recommendation": "invest_with_conditions",
+  "headline": "T02 Área Jardim Novo clears the hurdle rate, but payback at 56 months is long and the case needs firm sales pricing.",
+  "thesis": "The parcel shows a positive NPV of R$ 315,229 at the 14.0% hurdle rate and an IRR of 16.2% per year. Net profit is R$ 3,572,060 on a VGV of R$ 8,582,700, a margin of 41.6%. Maximum cash exposure reaches R$ 4,328,382, and the cash flow runs for 108 months. The margin is healthy, but the return depends on selling 67 lots at R$ 128,100 each.",
+  "risks": [
+   "Payback at 56 months ties up capital for a long time.",
+   "Infrastructure and site labor of R$ 2,387,880 could overrun.",
+   "NPV is only R$ 315,229, so a small drop in prices or sales pace erases the hurdle margin."
+  ],
+  "conditions": [
+   "Confirm the R$ 128,100 price per lot with pre-sale demand before committing.",
+   "Lock a fixed-price construction contract for infrastructure and site labor."
+  ]
+ }
+}

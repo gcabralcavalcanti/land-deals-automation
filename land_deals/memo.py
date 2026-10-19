@@ -7,7 +7,8 @@ import re
 from . import config
 from .llm import LLM
 
-SYSTEM = """You are an analyst at a land development company. Write a short investment memo for one parcel.
+SYSTEM = """You are an analyst at a land development company. Write a short investment memo for one parcel, for a
+partner who reads fast: plain English, short sentences, the decision first.
 Rules:
 - Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other
   number: no new totals, no differences, no ratios, no years.
@@ -44,10 +45,10 @@ def facts(p: dict, hurdle: float) -> dict[str, str]:
         "hurdle rate": pct(hurdle), "maximum cash exposure": money(p["max_exposure"]),
         "payback": f"{p['payback_months']} months" if p["payback_months"] is not None else "not reached",
         "cash flow duration": f"{p['duration_months']} months",
-        "infrastructure and site labor": money(-p["totals"]["infrastructure"]),
         "holding costs (maintenance + property tax)": money(-(p["totals"]["maintenance"] + p["totals"]["property_tax"])),
     }
     if p["strategy"] == "subdivision":
+        f["infrastructure and site labor"] = money(-p["totals"]["infrastructure"])
         f["lots"] = f"{p['lots']} lots"
         f["price per lot"] = money(p["lot_price"])
         f["months from purchase to launch"] = f"{p['launch'] - p['start']} months"

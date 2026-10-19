@@ -1,0 +1,21 @@
+{
+ "task": "memo-T10",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:41:21+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T10 Terreno Rua das Acácias\n- kind: urban\n- strategy: whole\n- area: 2,600 m2\n- acquisition price: R$ 590,000\n- VGV (total sales value): R$ 821,109\n- net profit (nominal): R$ 106,659\n- margin on VGV: 13.0%\n- NPV at the 14.0% hurdle rate: R$ -121,642\n- IRR (per year): 5.7%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 637,540\n- payback: 40 months\n- cash flow duration: 43 months\n- holding costs (maintenance + property tax): R$ 20,990"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T10 Terreno Rua das Acácias does not clear our 14.0% hurdle rate, so we should pass on it.",
+  "thesis": "The parcel shows a nominal net profit of R$ 106,659, a margin on VGV of 13.0%, and an IRR of 5.7% per year. At the 14.0% hurdle rate, the NPV is R$ -121,642, which means the deal destroys value for us. Payback takes 40 months over a 43-month cash flow, which ties up capital for too long.",
+  "risks": [
+   "The IRR of 5.7% per year sits far below the 14.0% hurdle rate, so returns would not compensate for the capital at risk.",
+   "Maximum cash exposure reaches R$ 637,540, and holding costs of R$ 20,990 keep eating into the margin over the long timeline."
+  ],
+  "conditions": [
+   "The acquisition price or sales value would need to change enough to bring the NPV at the 14.0% hurdle rate to zero or above."
+  ]
+ }
+}

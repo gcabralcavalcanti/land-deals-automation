@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import charts, config, intake, memo, model, synthetic, workbook
+from . import charts, config, findings, intake, memo, model, synthetic, workbook
 from .llm import LLM, BudgetExceeded, NoRecording
 
 
@@ -32,7 +32,8 @@ def run_all(llm: LLM | None) -> dict:
         except (NoRecording, BudgetExceeded) as e:
             memos.append({"id": p["id"], "status": f"not generated ({type(e).__name__})", "facts": {}})
     out = {
-        "workbook": workbook.build(config.OUTPUT / "land_portfolio.xlsx", parcels, pf, scen, sens, strat, memos),
+        "workbook": workbook.build(config.OUTPUT / "land_portfolio.xlsx", parcels, pf, scen, sens, strat, memos,
+                                   findings.conclusions(pf, scen, sens, strat)),
         "dashboard": charts.dashboard(config.OUTPUT / "dashboard.html", pf, scen, sens, strat, memos),
         "pdf": charts.pdf_report(config.REPORTS / "final-report.pdf", pf, scen, sens, strat, memos),
         "charts": charts.save_pngs(pf, scen, sens, config.REPORTS / "charts"),

@@ -6,159 +6,163 @@ Written by Claude from the facts the model computed; every number was checked ag
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**T01 Sítio Pinheirinho does not clear the 14.0% hurdle rate, so the parcel should not be acquired on the current plan.**
+**Sítio Pinheirinho does not clear our 14.0% hurdle rate, so we should pass.**
 
-Acquiring the whole parcel for R$ 693,000 yields a nominal net profit of R$ 166,846 on a VGV of R$ 1,124,426, a 14.8% margin. At the 14.0% hurdle rate the NPV is R$ -133,515 and the IRR is only 6.9% per year. Payback takes 39 months within a 43-month cash flow, and maximum cash exposure reaches R$ 861,482.
+The whole-parcel strategy shows a net profit of R$ 254,823 on a VGV of R$ 1,124,426. That is a 22.7% margin. But the NPV at the 14.0% hurdle rate is R$ -56,549, and the IRR is only 10.9% per year. Capital is tied up for 43 months, and payback takes 38 months. The deal earns less than our required return.
 
 Risks:
-- Holding costs of R$ 134,798 erode a thin margin over the 43-month cash flow.
-- Infrastructure and site labor is budgeted at R$ 0, so unexpected development costs could further reduce returns.
-- Payback at 39 months leaves little buffer against sales delays on a rural parcel.
+- IRR of 10.9% per year sits below the 14.0% hurdle rate.
+- Long cash flow duration of 43 months and maximum cash exposure of R$ 764,282 tie up capital.
+- Holding costs of R$ 37,598 for maintenance and property tax erode returns over the hold.
 
 Conditions:
-- Acquisition price is renegotiated low enough to bring NPV at the 14.0% hurdle rate to zero or above.
+- Purchase price falls enough to bring NPV at the 14.0% hurdle rate to zero or above.
+- Sales timeline shortens materially, so the IRR clears 14.0% per year.
 
 ## T02 Área Jardim Novo
 
 Recommendation: **invest_with_conditions** (number check: checked)
 
-**Parcel T02 Área Jardim Novo clears the 14.0% hurdle rate with an NPV of R$ 364,934, but the 56-month payback and R$ 4,316,843 peak cash exposure call for disciplined execution.**
+**T02 Área Jardim Novo clears the hurdle rate, but payback at 56 months is long and the case needs firm sales pricing.**
 
-The urban subdivision of 33,800 m2 into 67 lots at R$ 128,100 per lot produces a VGV of R$ 8,582,700 against an acquisition price of R$ 2,648,000. The project yields a net profit of R$ 3,654,876, a margin on VGV of 42.6%, and an IRR of 16.6% per year, above the 14.0% hurdle rate. Returns are real but depend on a long cash cycle of 108 months and substantial infrastructure spending of R$ 2,387,880.
+The parcel shows a positive NPV of R$ 315,229 at the 14.0% hurdle rate and an IRR of 16.2% per year. Net profit is R$ 3,572,060 on a VGV of R$ 8,582,700, a margin of 41.6%. Maximum cash exposure reaches R$ 4,328,382, and the cash flow runs for 108 months. The margin is healthy, but the return depends on selling 67 lots at R$ 128,100 each.
 
 Risks:
-- Payback of 56 months and a cash flow duration of 108 months expose capital to long-term market and financing risk.
-- Maximum cash exposure of R$ 4,316,843 is large relative to the acquisition price, leaving little margin for cost overruns.
-- Holding costs of R$ 144,865 and a 12-month lead from purchase to launch add carry risk if sales slow.
+- Payback at 56 months ties up capital for a long time.
+- Infrastructure and site labor of R$ 2,387,880 could overrun.
+- NPV is only R$ 315,229, so a small drop in prices or sales pace erases the hurdle margin.
 
 Conditions:
-- Infrastructure and site labor budget is locked at or near R$ 2,387,880 before closing.
-- Presales or lot reservations are secured before the 12-month launch to validate the R$ 128,100 price per lot.
+- Confirm the R$ 128,100 price per lot with pre-sale demand before committing.
+- Lock a fixed-price construction contract for infrastructure and site labor.
 
 ## T03 Chácara Água Limpa
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**T03 Chácara Água Limpa does not clear the 14.0% hurdle rate, with an NPV of R$ -180,966 and an IRR of 5.2% per year.**
+**T03 Chácara Água Limpa does not clear our 14.0% hurdle rate, so we should pass.**
 
-The parcel is a whole-strategy rural purchase at R$ 755,000 with a VGV of R$ 1,222,756 and a nominal net profit of R$ 139,917, a margin on VGV of 11.4%. Discounted at the 14.0% hurdle rate the NPV is R$ -180,966, so the investment destroys value relative to our required return. Payback of 40 months within a 43-month cash flow duration leaves little margin for delay, and holding costs of R$ 186,862 consume much of the nominal gain.
+The parcel shows a nominal net profit of R$ 265,787 on a VGV of R$ 1,222,756, a margin of 21.7%. But the NPV at the 14.0% hurdle rate is R$ -71,376, and the IRR is only 10.4% per year. Payback takes 38 months within a 43-month cash flow, and maximum cash exposure reaches R$ 842,438.
 
 Risks:
-- Holding costs of R$ 186,862 erode returns over a 43-month cash flow duration
-- Maximum cash exposure of R$ 978,338 ties up capital well beyond the hurdle rate
-- Infrastructure and site labor is budgeted at R$ 0, so unforeseen site works could further reduce margin
+- Returns fall below the 14.0% hurdle rate, so the deal destroys value on a risk-adjusted basis.
+- Long payback of 38 months ties up capital for most of the 43-month cash flow duration.
+- Holding costs of R$ 50,962 for maintenance and property tax erode the profit.
 
 Conditions:
-- Acquisition price or holding costs are renegotiated so that NPV at 14.0% is no longer negative
+- Acquisition price or sales assumptions would need to improve enough to bring NPV at 14.0% to zero or above.
 
 ## T04 Gleba Boa Vista
 
 Recommendation: **invest_with_conditions** (number check: checked)
 
-**T04 Gleba Boa Vista, a 68,000 m2 subdivision expansion, clears the 14.0% hurdle rate with a positive NPV, but payback of 59 months and maximum cash exposure of R$ 6,740,768 require disciplined execution.**
+**T04 Gleba Boa Vista clears our 14.0% hurdle rate, but payback is slow, so invest only if the conditions hold.**
 
-The parcel is acquired for R$ 2,956,000 and is expected to generate a VGV of R$ 12,566,400 across 136 lots at R$ 92,400 per lot, producing a nominal net profit of R$ 4,925,593 and a margin on VGV of 39.2%. The NPV at the 14.0% hurdle rate is R$ 344,649 with an IRR of 15.7% per year, so the project meets the return threshold. Returns are back-loaded, with payback at 59 months over a cash flow duration of 108 months, and infrastructure and site labor of R$ 4,847,040 drive the capital need.
+The parcel shows a net profit of R$ 4,804,336 on a VGV of R$ 12,566,400, a margin of 38.2%. NPV at the 14.0% hurdle rate is R$ 271,873, and IRR is 15.4% per year. The maximum cash exposure is R$ 6,757,664, and payback takes 59 months.
 
 Risks:
-- Maximum cash exposure of R$ 6,740,768 is large relative to the acquisition price and depends on construction and sales timing.
-- Payback at 59 months within a 108-month cash flow duration leaves long exposure to market and interest-rate shifts.
-- Holding costs of R$ 233,148 and the 12-month lead from purchase to launch could erode the thin NPV margin if delays occur.
+- Payback of 59 months within a 108-month cash flow leaves a long period of capital at risk.
+- Infrastructure and site labor of R$ 4,847,040 is a large cost that could overrun.
+- The NPV margin over the hurdle rate is thin, so small changes in price or timing could push returns below 14.0%.
 
 Conditions:
-- Infrastructure and site labor budget of R$ 4,847,040 is confirmed by fixed-price contracts before commitment.
-- Pre-sales of the 136 lots at R$ 92,400 per lot are secured or credibly validated before launch.
+- Confirm the price per lot of R$ 92,400 across the 136 lots before committing.
+- Lock the infrastructure budget of R$ 4,847,040 with fixed-price contracts.
 
 ## T05 Gleba Santa Rita
 
 Recommendation: **invest_with_conditions** (number check: checked)
 
-**T05 Gleba Santa Rita, a 147-lot subdivision expansion, clears the 14.0% hurdle rate with positive NPV, but payback is slow and cash exposure is high.**
+**Gleba Santa Rita clears the hurdle rate, but payback is long and cash exposure is high, so proceed only with conditions.**
 
-The parcel of 73,600 m2 was bought for R$ 3,016,000 and projects a VGV of R$ 13,406,400, a margin on VGV of 39.8% and a net profit of R$ 5,335,324. The NPV at the 14.0% hurdle rate is R$ 459,331 and the IRR is 16.2% per year, so the project creates value on these assumptions. Maximum cash exposure of R$ 7,111,106 and a payback of 58 months over a 108-month cash flow duration make the return sensitive to timing and execution.
+The parcel shows an NPV of R$ 381,691 at the 14.0% hurdle rate and an IRR of 15.8% per year. Net profit is R$ 5,205,962 on a VGV of R$ 13,406,400, a margin of 38.8%. The subdivision plan yields 147 lots at R$ 91,200 each. Maximum cash exposure reaches R$ 7,129,131, and payback takes 59 months.
 
 Risks:
-- Maximum cash exposure of R$ 7,111,106 ties up significant capital for a long period before payback at 58 months.
-- Infrastructure and site labor of R$ 5,239,080 is a large cost base that could overrun and erode the thin NPV margin of R$ 459,331.
+- Payback of 59 months ties up capital for a long period within a 108-month cash flow.
+- Infrastructure and site labor of R$ 5,239,080 is large relative to the acquisition price, so cost overruns would cut returns quickly.
+- NPV is positive but thin, so a small drop in lot prices or sales pace could push it below the hurdle rate.
 
 Conditions:
-- Infrastructure and site labor are contracted at or below the budgeted R$ 5,239,080 before launch.
-- The 147 lots are sold at or near R$ 91,200 per lot within the 12 months from purchase to launch.
+- Confirm infrastructure and site labor costs with fixed-price quotes before committing capital.
+- Secure pre-sales or a sales pace that supports the 12-month launch timeline.
 
 ## T06 Área Avenida Central
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**Parcel T06 Área Avenida Central fails the 14.0% hurdle rate, with a negative NPV of R$ -121,070 despite positive nominal profit.**
+**T06 Área Avenida Central destroys value at our 14.0% hurdle rate, so we should pass.**
 
-The whole-parcel strategy on this 10,000 m2 urban site returns a nominal net profit of R$ 361,438 on a VGV of R$ 1,723,657, a 21.0% margin. However, the IRR of 9.8% per year sits well below the 14.0% hurdle rate, so the project destroys value on a time-adjusted basis. Payback of 38 months against a 43-month cash flow duration and maximum cash exposure of R$ 1,214,910 further weakens the case.
+The parcel shows a net profit of R$ 347,299 on a R$ 1,113,000 acquisition, a 20.1% margin on VGV. But the IRR is 9.4% per year, below the 14.0% hurdle rate. At that hurdle the NPV is R$ -130,838, so the deal loses value after capital cost. Payback takes 38 months over a 43-month cash flow.
 
 Risks:
-- IRR of 9.8% per year is below the 14.0% hurdle, so capital is tied up for a sub-hurdle return.
-- Holding costs of R$ 51,825 (maintenance and property tax) erode margin over a 43-month cash flow duration.
+- Returns fall short of the hurdle: IRR of 9.4% per year against 14.0%.
+- Long capital tie-up: maximum cash exposure of R$ 1,214,910 for up to 43 months.
+- Holding costs of R$ 51,825 erode the margin over the cash flow period.
 
 Conditions:
-- Acquisition price or entry terms must fall enough to lift the NPV at the 14.0% hurdle rate to zero or above.
-- Sales value or timing must improve materially to close the gap between the 9.8% IRR and the 14.0% hurdle.
+- Acquisition price is renegotiated low enough to lift NPV at the 14.0% hurdle rate to zero or above.
 
 ## T07 Terreno Esquina Comercial
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**T07 Terreno Esquina Comercial does not clear the 14.0% hurdle rate, with a negative NPV of R$ -223,173 at that rate.**
+**T07 Terreno Esquina Comercial clears no hurdle: NPV at 14.0% is R$ -231,538, so we should pass.**
 
-The parcel is a 4,000 m2 urban whole-parcel acquisition at R$ 1,074,000 with a VGV of R$ 1,476,098 and a nominal net profit of R$ 191,166, a 13.0% margin on VGV. However, the IRR of 5.6% per year falls well below the 14.0% hurdle rate, producing an NPV of R$ -223,173. Payback takes 40 months over a 43-month cash flow duration, and maximum cash exposure reaches R$ 1,158,780.
+The parcel costs R$ 1,074,000 and sells for a VGV of R$ 1,476,098. Net profit is R$ 179,058, a margin of 12.1% on VGV. The IRR is only 5.2% per year, well below the 14.0% hurdle rate. Payback takes 40 months over a 43-month cash flow, which ties up capital for too long.
 
 Risks:
-- IRR of 5.6% per year is far below the 14.0% hurdle rate, so capital is poorly compensated for the time committed
-- Holding costs of R$ 36,450 (maintenance + property tax) erode returns over a 43-month cash flow duration
-- Infrastructure and site labor is budgeted at R$ 0, so any unforeseen site works would reduce the nominal profit of R$ 191,166
+- Returns fall far short of the 14.0% hurdle rate, with an IRR of 5.2% per year.
+- Maximum cash exposure reaches R$ 1,158,780, and holding costs of R$ 36,450 erode the margin.
+- Payback at 40 months leaves little room for any sales delay.
 
 Conditions:
-- Acquisition price is renegotiated to a level where NPV at the 14.0% hurdle rate is no longer negative
-- Sales value or margin improves enough to lift the IRR materially above 5.6% per year
+- Acquisition price falls enough to bring NPV at 14.0% to zero or better.
+- Sales value rises or holding costs fall enough to lift the IRR well above 14.0%.
 
 ## T08 Área Vila Operária
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**T08 Área Vila Operária shows a negative NPV of R$ -166,926 at the 14.0% hurdle rate, so the parcel should not be acquired on the current terms.**
+**T08 Área Vila Operária fails the 14.0% hurdle rate, so we should pass.**
 
-At an IRR of 4.4% per year against a 14.0% hurdle rate, the parcel fails to earn the required return despite a nominal net profit of R$ 98,816. The margin on VGV of 10.4% is thin relative to a maximum cash exposure of R$ 772,830 and a payback of 40 months within a 43-month cash flow duration. The business case does not justify the capital tied up.
+The parcel shows a nominal net profit of R$ 90,998 on a VGV of R$ 953,102, a margin of 9.5%. At the 14.0% hurdle rate the NPV is R$ -172,327, and the IRR is only 4.1% per year. Payback takes 41 months, and maximum cash exposure reaches R$ 772,830.
 
 Risks:
-- Returns are well below the hurdle rate, and the 40-month payback leaves little margin for delays.
-- Holding costs of R$ 36,105 and infrastructure and site labor at R$ 0 may be understated if site work proves necessary.
+- Returns are far below the 14.0% hurdle rate, so capital is destroyed in present-value terms.
+- Payback at 41 months within a 43-month cash flow leaves little room for delays in sales or permits.
+- Holding costs of R$ 36,105 add to the drag on an already thin margin.
 
 Conditions:
-- Acquisition price is reduced enough to bring NPV at the 14.0% hurdle rate to a positive value.
-- Sales value or timing improves enough to lift the IRR above the 14.0% hurdle rate.
+- Acquisition price or total sales value would need to change enough to bring NPV at the 14.0% hurdle rate to zero or above.
 
 ## T09 Gleba Ribeirão Claro
 
-Recommendation: **invest** (number check: checked)
+Recommendation: **invest_with_conditions** (number check: checked)
 
-**T09 Gleba Ribeirão Claro, a 76,200 m2 subdivision expansion, clears the 14.0% hurdle rate with a positive NPV and a 23.9% IRR.**
+**Parcel T09 Gleba Ribeirão Claro clears the 14.0% hurdle with an NPV of R$ 2,271,440, but cash exposure and a 49-month payback require conditions.**
 
-The parcel is acquired for R$ 3,563,000 and supports 152 lots at R$ 115,800 each, for a VGV of R$ 17,601,600 and a net nominal profit of R$ 9,044,293 (51.4% margin on VGV). At the 14.0% hurdle rate the NPV is R$ 2,373,376, and the IRR of 23.9% per year is well above the hurdle. Payback occurs in 48 months within a 108-month cash flow duration, with maximum cash exposure of R$ 7,312,004.
+The subdivision of 76,200 m2 into 152 lots at R$ 115,800 per lot gives a VGV of R$ 17,601,600 and a net profit of R$ 8,874,451. The margin on VGV is 50.4%, and the IRR is 23.5% per year against a 14.0% hurdle. The purchase price is R$ 3,563,000, but maximum cash exposure reaches R$ 7,335,669.
 
 Risks:
-- Infrastructure and site labor of R$ 5,417,280 is large relative to the purchase price and could overrun.
-- Lot sales depend on absorbing 152 lots at R$ 115,800 each, so slower sales would extend payback beyond 48 months.
-- Holding costs of R$ 267,422 and the 12-month lead time from purchase to launch expose the project to market and timing delays.
+- Maximum cash exposure of R$ 7,335,669 is more than twice the acquisition price.
+- Payback takes 49 months within a 108-month cash flow duration, so returns depend on sustained sales.
+- Infrastructure and site labor of R$ 5,417,280 is a large cost that could overrun.
+
+Conditions:
+- Confirm the infrastructure and site labor budget before committing capital.
+- Secure financing or equity commitments that cover the full maximum cash exposure of R$ 7,335,669.
 
 ## T10 Terreno Rua das Acácias
 
 Recommendation: **do_not_invest** (number check: checked)
 
-**The T10 Terreno Rua das Acácias parcel should not be acquired at R$ 590,000 because its NPV at the 14.0% hurdle rate is negative.**
+**T10 Terreno Rua das Acácias does not clear our 14.0% hurdle rate, so we should pass on it.**
 
-At an acquisition price of R$ 590,000 and a VGV of R$ 821,109, the parcel yields a net profit of R$ 113,394 and a margin on VGV of 13.8%. However, the NPV at the 14.0% hurdle rate is R$ -116,989 and the IRR is 6.0% per year, well below the hurdle. Payback takes 40 months within a 43-month cash flow duration, leaving little slack.
+The parcel shows a nominal net profit of R$ 106,659, a margin on VGV of 13.0%, and an IRR of 5.7% per year. At the 14.0% hurdle rate, the NPV is R$ -121,642, which means the deal destroys value for us. Payback takes 40 months over a 43-month cash flow, which ties up capital for too long.
 
 Risks:
-- IRR of 6.0% per year falls well short of the 14.0% hurdle rate, so capital would be destroyed on a risk-adjusted basis.
-- Maximum cash exposure of R$ 637,540 and holding costs of R$ 20,990 erode returns over a long horizon.
-- Thin margin on VGV of 13.8% leaves little buffer against sales price or timing slippage.
+- The IRR of 5.7% per year sits far below the 14.0% hurdle rate, so returns would not compensate for the capital at risk.
+- Maximum cash exposure reaches R$ 637,540, and holding costs of R$ 20,990 keep eating into the margin over the long timeline.
 
 Conditions:
-- Acquisition price would need to fall enough to bring the NPV at the 14.0% hurdle rate to zero or above.
-- Sales value or schedule would need to improve enough to lift the IRR above the 14.0% hurdle rate.
+- The acquisition price or sales value would need to change enough to bring the NPV at the 14.0% hurdle rate to zero or above.

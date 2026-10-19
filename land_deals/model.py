@@ -47,6 +47,7 @@ def project(parcel: dict, assumptions: dict | None = None, strategy: str | None 
     if parcel["kind"] == "rural":
         flows["acquisition_taxes"][t0] -= a["car_service"]
     tax_rate = a["itr_rate"] if parcel["kind"] == "rural" else a["iptu_rate"]
+    maintenance = a["rural_maintenance_per_m2_month"] if parcel["kind"] == "rural" else a["maintenance_per_m2_month"]
     unsold: dict[int, float] = {}           # share of the area still owned, by month
     info: dict = {"strategy": strategy}
 
@@ -93,7 +94,7 @@ def project(parcel: dict, assumptions: dict | None = None, strategy: str | None 
         info.update(lots=1, lot_price=vgv, launch=sale_month, sell_out=sale_month, infra_total=0.0)
 
     for m, share in unsold.items():
-        flows["maintenance"][m] -= a["maintenance_per_m2_month"] * area * share
+        flows["maintenance"][m] -= maintenance * area * share
         flows["property_tax"][m] -= tax_rate / 12 * price * share
     receipts = {m: sum(flows[c][m] for c in INFLOWS) for m in set().union(*(flows[c] for c in INFLOWS))}
     for m, r in receipts.items():

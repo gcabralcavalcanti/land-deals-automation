@@ -1,0 +1,23 @@
+{
+ "task": "memo-T09",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:41:18+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T09 Gleba Ribeirão Claro\n- kind: expansion\n- strategy: subdivision\n- area: 76,200 m2\n- acquisition price: R$ 3,563,000\n- VGV (total sales value): R$ 17,601,600\n- net profit (nominal): R$ 8,874,451\n- margin on VGV: 50.4%\n- NPV at the 14.0% hurdle rate: R$ 2,271,440\n- IRR (per year): 23.5%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 7,335,669\n- payback: 49 months\n- cash flow duration: 108 months\n- holding costs (maintenance + property tax): R$ 267,422\n- infrastructure and site labor: R$ 5,417,280\n- lots: 152 lots\n- price per lot: R$ 115,800\n- months from purchase to launch: 12 months"
+ },
+ "answer": {
+  "recommendation": "invest_with_conditions",
+  "headline": "Parcel T09 Gleba Ribeirão Claro clears the 14.0% hurdle with an NPV of R$ 2,271,440, but cash exposure and a 49-month payback require conditions.",
+  "thesis": "The subdivision of 76,200 m2 into 152 lots at R$ 115,800 per lot gives a VGV of R$ 17,601,600 and a net profit of R$ 8,874,451. The margin on VGV is 50.4%, and the IRR is 23.5% per year against a 14.0% hurdle. The purchase price is R$ 3,563,000, but maximum cash exposure reaches R$ 7,335,669.",
+  "risks": [
+   "Maximum cash exposure of R$ 7,335,669 is more than twice the acquisition price.",
+   "Payback takes 49 months within a 108-month cash flow duration, so returns depend on sustained sales.",
+   "Infrastructure and site labor of R$ 5,417,280 is a large cost that could overrun."
+  ],
+  "conditions": [
+   "Confirm the infrastructure and site labor budget before committing capital.",
+   "Secure financing or equity commitments that cover the full maximum cash exposure of R$ 7,335,669."
+  ]
+ }
+}

@@ -20,8 +20,8 @@ START = (2026, 1)                         # month 0 of the model (year, month)
 # name: (base, low, high, unit, source). low/high feed the sensitivity analysis and the scenarios.
 ASSUMPTIONS: dict[str, tuple] = {
     # acquisition
-    "itbi_rate": (0.03, 0.02, 0.03, "share of price", "municipal tax; 2-3% is the usual range in SP municipalities (illustrative)"),
-    "deed_registry_rate": (0.015, 0.01, 0.02, "share of price", "notary and registry fees follow state tables (illustrative)"),
+    "itbi_rate": (0.03, 0.02, 0.03, "share of price", "municipal transfer tax (Constitution art. 156, II); 2-3% is the common rate (illustrative)"),
+    "deed_registry_rate": (0.015, 0.01, 0.02, "share of price", "deed and registry fees follow state fee tables (in SP, Lei 11.331/2002); 1-2% of the price in total (illustrative)"),
     # subdivision (loteamento)
     "saleable_ratio": (0.60, 0.55, 0.65, "share of gross area", "streets and public areas are set by municipal law under Lei 6.766/1979 (illustrative)"),
     "lot_size_m2": (300, 250, 360, "m2", "illustrative"),
@@ -35,15 +35,16 @@ ASSUMPTIONS: dict[str, tuple] = {
     "fence_per_m": (60.0, 40.0, 90.0, "R$/m of perimeter", "illustrative"),
     "marketing_rate": (0.015, 0.01, 0.025, "share of VGV", "illustrative"),
     # holding
-    "maintenance_per_m2_month": (0.08, 0.05, 0.12, "R$/m2 of unsold area per month", "cleaning, mowing, fence repairs (illustrative)"),
-    "iptu_rate": (0.01, 0.006, 0.015, "share of land value per year", "urban property tax, municipal (illustrative)"),
-    "itr_rate": (0.003, 0.0003, 0.01, "share of land value per year", "rural land tax, rate table of Lei 9.393/1996 (0.03% to 20%); low-use small areas assumed"),
+    "maintenance_per_m2_month": (0.08, 0.05, 0.12, "R$/m2 of unsold urban area per month", "cleaning, mowing, fence repairs, security rounds (illustrative)"),
+    "rural_maintenance_per_m2_month": (0.02, 0.01, 0.04, "R$/m2 of rural area per month", "mowing and fence repairs only (illustrative)"),
+    "iptu_rate": (0.01, 0.005, 0.02, "share of land value per year", "municipal urban property tax; vacant land often pays more; CTN art. 32 extends it to approved urban-expansion areas (illustrative)"),
+    "itr_rate": (0.003, 0.0003, 0.01, "share of bare-land value per year", "rural land tax, Lei 9.393/1996: 0.03% to 1.00% for areas up to 50 ha, by degree of use; partial use assumed"),
     "car_service": (2500.0, 1500.0, 4000.0, "R$ once per rural parcel", "CAR registration is free (SICAR); this is the surveyor's fee (illustrative)"),
     # sale
     "broker_rate": (0.05, 0.04, 0.06, "share of sale price", "illustrative"),
-    "sales_tax_rate": (0.0593, 0.0593, 0.0593, "share of receipts", "Lucro Presumido: IRPJ 1.2% + CSLL 1.08% (Lei 9.249/1995) + PIS 0.65% + COFINS 3% (Lei 9.718/1998)"),
+    "sales_tax_rate": (0.0673, 0.0593, 0.0673, "share of receipts", "Lucro Presumido on cash receipts: IRPJ 15% + 10% surcharge and CSLL 9% on presumed profit of 8% and 12% (Lei 9.249/1995) = 2.08% + 1.08%, plus PIS 0.65% and COFINS 3% (Lei 9.718/1998); low = no surcharge"),
     "absorption_months": (36, 24, 48, "months to sell all lots", "author's experience: return takes 2-4 years on average"),
-    "lot_price_factor": (1.0, 0.85, 1.10, "x the parcel's lot price/m2", "scenario lever"),
+    "lot_price_factor": (1.0, 0.85, 1.10, "x the parcel's prices per m2", "scenario lever on lot prices and raw-land prices"),
     # payment
     "cash_share": (0.30, 0.20, 0.40, "share of sales paid in cash", "illustrative"),
     "down_rate": (0.20, 0.10, 0.30, "share of price at signing", "illustrative"),

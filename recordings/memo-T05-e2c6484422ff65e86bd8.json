@@ -1,0 +1,23 @@
+{
+ "task": "memo-T05",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:52+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T05 Gleba Santa Rita\n- kind: expansion\n- strategy: subdivision\n- area: 73,600 m2\n- acquisition price: R$ 3,016,000\n- VGV (total sales value): R$ 13,406,400\n- net profit (nominal): R$ 5,205,962\n- margin on VGV: 38.8%\n- NPV at the 14.0% hurdle rate: R$ 381,691\n- IRR (per year): 15.8%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 7,129,131\n- payback: 59 months\n- cash flow duration: 108 months\n- holding costs (maintenance + property tax): R$ 247,839\n- infrastructure and site labor: R$ 5,239,080\n- lots: 147 lots\n- price per lot: R$ 91,200\n- months from purchase to launch: 12 months"
+ },
+ "answer": {
+  "recommendation": "invest_with_conditions",
+  "headline": "Gleba Santa Rita clears the hurdle rate, but payback is long and cash exposure is high, so proceed only with conditions.",
+  "thesis": "The parcel shows an NPV of R$ 381,691 at the 14.0% hurdle rate and an IRR of 15.8% per year. Net profit is R$ 5,205,962 on a VGV of R$ 13,406,400, a margin of 38.8%. The subdivision plan yields 147 lots at R$ 91,200 each. Maximum cash exposure reaches R$ 7,129,131, and payback takes 59 months.",
+  "risks": [
+   "Payback of 59 months ties up capital for a long period within a 108-month cash flow.",
+   "Infrastructure and site labor of R$ 5,239,080 is large relative to the acquisition price, so cost overruns would cut returns quickly.",
+   "NPV is positive but thin, so a small drop in lot prices or sales pace could push it below the hurdle rate."
+  ],
+  "conditions": [
+   "Confirm infrastructure and site labor costs with fixed-price quotes before committing capital.",
+   "Secure pre-sales or a sales pace that supports the 12-month launch timeline."
+  ]
+ }
+}

@@ -1,0 +1,22 @@
+{
+ "task": "memo-T08",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:59+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T08 Área Vila Operária\n- kind: urban\n- strategy: whole\n- area: 7,700 m2\n- acquisition price: R$ 705,000\n- VGV (total sales value): R$ 953,102\n- net profit (nominal): R$ 90,998\n- margin on VGV: 9.5%\n- NPV at the 14.0% hurdle rate: R$ -172,327\n- IRR (per year): 4.1%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 772,830\n- payback: 41 months\n- cash flow duration: 43 months\n- holding costs (maintenance + property tax): R$ 36,105"
+ },
+ "answer": {
+  "recommendation": "do_not_invest",
+  "headline": "T08 Área Vila Operária fails the 14.0% hurdle rate, so we should pass.",
+  "thesis": "The parcel shows a nominal net profit of R$ 90,998 on a VGV of R$ 953,102, a margin of 9.5%. At the 14.0% hurdle rate the NPV is R$ -172,327, and the IRR is only 4.1% per year. Payback takes 41 months, and maximum cash exposure reaches R$ 772,830.",
+  "risks": [
+   "Returns are far below the 14.0% hurdle rate, so capital is destroyed in present-value terms.",
+   "Payback at 41 months within a 43-month cash flow leaves little room for delays in sales or permits.",
+   "Holding costs of R$ 36,105 add to the drag on an already thin margin."
+  ],
+  "conditions": [
+   "Acquisition price or total sales value would need to change enough to bring NPV at the 14.0% hurdle rate to zero or above."
+  ]
+ }
+}

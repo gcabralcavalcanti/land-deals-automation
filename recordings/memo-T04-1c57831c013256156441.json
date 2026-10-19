@@ -1,0 +1,23 @@
+{
+ "task": "memo-T04",
+ "model": "claude-haiku-5-5",
+ "recorded_at": "2026-10-19T21:40:49+00:00",
+ "request": {
+  "system": "You are an analyst at a land development company. Write a short investment memo for one parcel, for a\npartner who reads fast: plain English, short sentences, the decision first.\nRules:\n- Use only the numbers in FACTS, written exactly as they appear there (same format, same rounding). Write no other\n  number: no new totals, no differences, no ratios, no years.\n- recommendation: invest, invest_with_conditions or do_not_invest. A negative NPV at the hurdle rate cannot be\n  \"invest\".\n- headline: one sentence. thesis: 2 to 4 sentences. risks: 2 or 3 short items. conditions: 0 to 2 short items\n  (what would have to be true to invest).",
+  "prompt": "FACTS\n- parcel: T04 Gleba Boa Vista\n- kind: expansion\n- strategy: subdivision\n- area: 68,000 m2\n- acquisition price: R$ 2,956,000\n- VGV (total sales value): R$ 12,566,400\n- net profit (nominal): R$ 4,804,336\n- margin on VGV: 38.2%\n- NPV at the 14.0% hurdle rate: R$ 271,873\n- IRR (per year): 15.4%\n- hurdle rate: 14.0%\n- maximum cash exposure: R$ 6,757,664\n- payback: 59 months\n- cash flow duration: 108 months\n- holding costs (maintenance + property tax): R$ 233,148\n- infrastructure and site labor: R$ 4,847,040\n- lots: 136 lots\n- price per lot: R$ 92,400\n- months from purchase to launch: 12 months"
+ },
+ "answer": {
+  "recommendation": "invest_with_conditions",
+  "headline": "T04 Gleba Boa Vista clears our 14.0% hurdle rate, but payback is slow, so invest only if the conditions hold.",
+  "thesis": "The parcel shows a net profit of R$ 4,804,336 on a VGV of R$ 12,566,400, a margin of 38.2%. NPV at the 14.0% hurdle rate is R$ 271,873, and IRR is 15.4% per year. The maximum cash exposure is R$ 6,757,664, and payback takes 59 months.",
+  "risks": [
+   "Payback of 59 months within a 108-month cash flow leaves a long period of capital at risk.",
+   "Infrastructure and site labor of R$ 4,847,040 is a large cost that could overrun.",
+   "The NPV margin over the hurdle rate is thin, so small changes in price or timing could push returns below 14.0%."
+  ],
+  "conditions": [
+   "Confirm the price per lot of R$ 92,400 across the 136 lots before committing.",
+   "Lock the infrastructure budget of R$ 4,847,040 with fixed-price contracts."
+  ]
+ }
+}
