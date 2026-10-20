@@ -41,7 +41,8 @@ python demo.py
 Runs without an API key, replaying recorded answers. Set `ANTHROPIC_API_KEY` to call Claude live.
 
 It writes `final-report.pdf` and, in `output/`, an Excel workbook, a dashboard page (`dashboard.html`) and the
-investment notes for each plot. Tests: `python -m pytest -q`.
+investment notes for each plot. Tests: `python -m pytest -q`. Day-to-day use and what to do when something
+breaks: [`RUNBOOK.md`](RUNBOOK.md).
 
 ## How it works
 
