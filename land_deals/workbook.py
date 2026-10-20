@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import re
+import zipfile
+from datetime import datetime
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -16,6 +19,7 @@ MONEY, PCT, INT = '"R$" #,##0;[Red]-"R$" #,##0', "0.0%", "#,##0"
 AXIS_MI = '"R$" #,##0.0,," mi"'  # axis in R$ millions
 HEAD = PatternFill("solid", fgColor="1F4E5F")
 BLUE = "1F4E5F"
+FIXED_TIME = datetime(2026, 1, 1)
 
 
 def month_label(m: int) -> str:
@@ -82,8 +86,21 @@ def build(
     _strategy(wb.create_sheet("Strategy"), strat)
     _memos(wb.create_sheet("Memos"), memos)
     path.parent.mkdir(parents=True, exist_ok=True)
+    wb.properties.created = wb.properties.modified = FIXED_TIME
     wb.save(path)
+    _fix_zip_times(path)
     return path
+
+
+def _fix_zip_times(path: Path) -> None:
+    """Rewrite the archive with fixed entry dates, so the same input gives the same file (clean git status)."""
+    with zipfile.ZipFile(path) as z:
+        entries = [(i.filename, z.read(i.filename)) for i in z.infolist()]
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
+        for name, data in entries:
+            if name == "docProps/core.xml":  # openpyxl stamps the save time here
+                data = re.sub(rb"(<dcterms:modified[^>]*>)[^<]*", rb"\g<1>2026-01-01T00:00:00Z", data)
+            z.writestr(zipfile.ZipInfo(name, date_time=FIXED_TIME.timetuple()[:6]), data, zipfile.ZIP_DEFLATED)
 
 
 def _summary(ws, pf, scen, findings):
