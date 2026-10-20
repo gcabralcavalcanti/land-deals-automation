@@ -28,6 +28,13 @@ Reading descriptions and writing the investment notes need `ANTHROPIC_API_KEY` (
 `.env.example`) the first time a question is asked; answers are saved in `data/recorded/` and never paid twice.
 `python -m land_deals run --no-memos` builds everything except the notes, with no AI at all.
 
+## Publishing the live demo
+
+Every push to `main` runs `.github/workflows/pages.yml`: tests, then `python demo.py --demo` with an empty API key (no
+call is made), then the dashboard is published as the GitHub Pages site, with the PDF next to it. One-time setup in the
+repository: Settings > Pages > Source = GitHub Actions. If that is not set, the workflow stops at "configure-pages"
+with a clear message.
+
 ## When something breaks
 
 | Message or symptom | What to do |

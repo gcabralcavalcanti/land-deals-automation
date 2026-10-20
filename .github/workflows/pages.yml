@@ -1,0 +1,58 @@
+# On every push to main: run the tests, run the demo without an API key (recorded answers only)
+# and publish the dashboard on GitHub Pages. Pages: Settings > Pages > Source = GitHub Actions.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ANTHROPIC_API_KEY: ""   # empty on purpose: the demo replays recorded answers and never calls the API
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: python demo.py --demo
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site
+          cp output/dashboard.html _site/index.html
+          cp final-report.pdf _site/final-report.pdf
+
+      # fails with a clear message if Pages is not enabled (Settings > Pages > Source: GitHub Actions)
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
