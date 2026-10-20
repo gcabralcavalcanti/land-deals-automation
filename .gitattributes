@@ -6,3 +6,4 @@
 *.xlsx binary
 *.png binary
 *.jpg binary
+*.html text eol=lf
