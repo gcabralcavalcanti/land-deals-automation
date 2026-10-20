@@ -147,5 +147,5 @@ def accept(result: dict, portfolio_path: Path = config.PORTFOLIO) -> dict:
     parcels = json.loads(portfolio_path.read_text(encoding="utf-8"))
     new = {"id": f"T{len(parcels) + 1:02d}", **result["parcel"]}
     parcels.append(new)
-    portfolio_path.write_text(json.dumps(parcels, ensure_ascii=False, indent=1), encoding="utf-8")
+    portfolio_path.write_text(json.dumps(parcels, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     return new

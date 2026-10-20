@@ -56,7 +56,7 @@ def generate(path: Path = config.PORTFOLIO, seed: int = 11) -> list[dict]:
         p["id"] = f"T{i:02d}"
     parcels = [{"id": p.pop("id"), **p} for p in parcels]
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(parcels, ensure_ascii=False, indent=1), encoding="utf-8")
+    path.write_text(json.dumps(parcels, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     return parcels
 
 

@@ -481,7 +481,7 @@ def dashboard(path: Path, pf, scen, sens, strat, memos) -> Path:
     }
     html = TEMPLATE.replace("__DATA__", json.dumps(data, ensure_ascii=False))
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(html, encoding="utf-8")
+    path.write_text(html, encoding="utf-8", newline="\n")
     return path
 
 

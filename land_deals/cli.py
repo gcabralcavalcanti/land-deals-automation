@@ -63,8 +63,10 @@ def run_all(llm: LLM | None) -> dict:
         "memos": {m["id"]: {"recommendation": m.get("recommendation"), "status": m["status"]} for m in memos},
     }
     config.OUTPUT.mkdir(exist_ok=True)
-    (config.OUTPUT / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8")
-    (config.OUTPUT / "memos.md").write_text(memos_md(memos), encoding="utf-8")
+    (config.OUTPUT / "summary.json").write_text(
+        json.dumps(summary, indent=1, ensure_ascii=False), encoding="utf-8", newline="\n"
+    )
+    (config.OUTPUT / "memos.md").write_text(memos_md(memos), encoding="utf-8", newline="\n")
     return {
         "summary": summary,
         "files": {
