@@ -16,6 +16,15 @@ worth buying, whether it pays to split it into lots or sell it whole, and how lo
   in a bad, an expected and a good case ([`final-report.pdf`](final-report.pdf)).
 - An investment note per plot written by Claude, kept only if every number in it matches the model.
 
+## How I use it
+
+This model is new: I built it for this portfolio, and it does not replace a routine I run today. It puts into code the
+questions I worked through on each land deal: what the plot really costs to buy and hold, whether splitting it into
+lots pays more than selling it whole, how much cash goes in before sales start, and when the money comes back. The way
+I would use it is one deal at a time: describe the plot in a text file, check the inputs the AI pulls out, run the
+model, and read the numbers and the note before deciding. Nothing runs on a schedule, and the inputs only enter the
+model after I accept them.
+
 ## Run it
 
 ```
