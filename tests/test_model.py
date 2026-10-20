@@ -253,3 +253,23 @@ def test_conclusions_follow_the_numbers(parcels, pf):
     assert findings.label(sens[0]["assumption"]) in text
     subs = sum(1 for p in pf["projects"] if p["strategy"] == "subdivision")
     assert f"The {subs} subdivisions" in text
+
+
+def test_empty_key_means_demo_without_fallback(monkeypatch, tmp_path):
+    """ANTHROPIC_API_KEY set but empty: no .env, no Windows registry, demo mode."""
+    import sys
+    import types
+
+    from land_deals import config, llm
+
+    fake = types.SimpleNamespace(
+        HKEY_CURRENT_USER=0, OpenKey=lambda *a: (_ for _ in ()).throw(AssertionError("registry read"))
+    )
+    monkeypatch.setitem(sys.modules, "winreg", fake)
+    (tmp_path / ".env").write_text("ANTHROPIC_API_KEY=sk-from-dotenv", encoding="utf-8")
+    monkeypatch.setattr(config, "ROOT", tmp_path)
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "")
+    assert llm._load_key() is None
+    assert llm.LLM(mode="auto", recordings=tmp_path / "rec", log_dir=tmp_path / "logs").mode == "demo"
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
+    assert llm._load_key() == "sk-test"
