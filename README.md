@@ -1,4 +1,4 @@
-# land-deals-automation
+# Land deal performance reports
 
 Public version, with synthetic numbers, of the kind of analysis I did when buying and selling land: whether a plot is
 worth buying, whether it pays to split it into lots or sell it whole, and how long until the money comes back.
