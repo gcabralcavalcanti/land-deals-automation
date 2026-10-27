@@ -1,9 +1,9 @@
 # Land deal performance reports
 
+**[See it working](https://gcabralcavalcanti.github.io/land-deals-automation/)** · [Overview, 1 page (PDF)](overview.pdf) · [Full report (PDF)](final-report.pdf)
+
 Public version, with synthetic numbers, of the kind of analysis I did when buying and selling land: whether a plot is
 worth buying, whether it pays to split it into lots or sell it whole, and how long until the money comes back.
-
-**[Live demo](https://gcabralcavalcanti.github.io/land-deals-automation/)**: the dashboard, rebuilt from this code on every push.
 
 ![Synthetic data — no private records](https://img.shields.io/badge/data-synthetic%20%E2%80%94%20no%20private%20records-e07b39)
 ![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-6f42c1)
